@@ -1,0 +1,20 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            int PicturesInAlbum = 52;
+            int PicturesInRow = 3;
+            int fullRow = PicturesInAlbum / PicturesInRow;
+            int PicturesOutRow = PicturesInAlbum % PicturesInRow;
+            Console.WriteLine($"Получится {fullRow} рядов картинок и {PicturesOutRow} будет сверх меры.");
+        }
+    }
+}
