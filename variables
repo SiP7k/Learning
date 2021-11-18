@@ -1,0 +1,26 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+	class Test
+	{
+        public static void Main()
+        {
+            int apples;
+            bool isTasty;
+            string appleTaste;
+            char firstLetter;
+            float temperature;
+            short appleCount;
+            double radius;
+            long allApples;
+            byte appleTrees;
+            ushort appleSeeds;
+        }
+        
+    }
+}
