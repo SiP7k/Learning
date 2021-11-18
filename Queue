@@ -13,8 +13,10 @@ namespace Start
             int timeOfSession = 10;
             Console.Write("Введите количество людей в очереди: ");
             int people = Convert.ToInt32(Console.ReadLine());
-            int queueTime = timeOfSession * people; 
-            Console.WriteLine($"Вы должны страдать ещё {queueTime/60} часа и {queueTime%60} минут");
+            int queueTime = timeOfSession * people;
+            int hours = queueTime / 60;
+            int minutes = queueTime % 60;
+            Console.WriteLine($"Вы должны страдать ещё {hours} часа и {minutes} минут");
         }
     }
 }
