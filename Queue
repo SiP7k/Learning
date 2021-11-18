@@ -1,0 +1,20 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            int timeOfSession = 10;
+            Console.Write("Введите количество людей в очереди: ");
+            int people = Convert.ToInt32(Console.ReadLine());
+            int queueTime = timeOfSession * people; 
+            Console.WriteLine($"Вы должны страдать ещё {queueTime/60} часа и {queueTime%60} минут");
+        }
+    }
+}
