@@ -10,11 +10,11 @@ namespace Start
     {
         public static void Main()
         {
-            int PicturesInAlbum = 52;
-            int PicturesInRow = 3;
-            int fullRow = PicturesInAlbum / PicturesInRow;
-            int PicturesOutRow = PicturesInAlbum % PicturesInRow;
-            Console.WriteLine($"Получится {fullRow} рядов картинок и {PicturesOutRow} будет сверх меры.");
+            int picturesInAlbum = 52;
+            int picturesInRow = 3;
+            int fullRow = picturesInAlbum / picturesInRow;
+            int picturesOutRow = picturesInAlbum % picturesInRow;
+            Console.WriteLine($"Получится {fullRow} рядов картинок и {picturesOutRow} будет сверх меры.");
         }
     }
 }
