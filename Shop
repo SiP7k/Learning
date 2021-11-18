@@ -1,0 +1,26 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            int crystals = 0;
+            int crystalPrice = 5;
+            Console.WriteLine($"Вы вошли в магазин. За стойкой стоит мерзкого вида гоблин," +
+                $" он нехотя поднимает руку, указывая на табличку - В продаже только кристаллы, стоимость {crystalPrice} золотых");
+            Console.Write("Введите количество денег: ");
+            int money = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Введите количество кристаллов, которое вы хотите купить: ");
+            int buyCrystals = Convert.ToInt32(Console.ReadLine());
+            money -= buyCrystals * 5;
+            crystals += buyCrystals;
+            Console.WriteLine($"Вы купили {buyCrystals} кристаллов за {crystalPrice*buyCrystals} золотых, теперь у вас {crystals} кристаллов и {money} золотых");
+        }
+    }
+}
