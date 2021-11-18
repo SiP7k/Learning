@@ -18,9 +18,9 @@ namespace Start
             int money = Convert.ToInt32(Console.ReadLine());
             Console.Write("Введите количество кристаллов, которое вы хотите купить: ");
             int buyCrystals = Convert.ToInt32(Console.ReadLine());
-            money -= buyCrystals * 5;
+            money -= buyCrystals * crystalPrice;
             crystals += buyCrystals;
-            Console.WriteLine($"Вы купили {buyCrystals} кристаллов за {crystalPrice*buyCrystals} золотых, теперь у вас {crystals} кристаллов и {money} золотых");
+            Console.WriteLine($"Вы купили {buyCrystals} кристаллов за {crystalPrice * buyCrystals} золотых, теперь у вас {crystals} кристаллов и {money} золотых");
         }
     }
 }
