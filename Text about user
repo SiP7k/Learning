@@ -1,0 +1,20 @@
+using System;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            Console.Write($"Введите ваше имя: ");
+            string name = Console.ReadLine();
+            Console.Write($"Введите ваш возраст: ");
+            string age = Console.ReadLine();
+            Console.Write($"Введите ваш знак зодиака: ");
+            string zodiacSign = Console.ReadLine();
+            Console.Write($"Введите ваше место работы: ");
+            string workPlace = Console.ReadLine();
+            Console.WriteLine($"Вас зовут {name}, вам {age}, по знаку зодиака вы {zodiacSign} и работаете в {workPlace}");
+        }
+    }
+}
