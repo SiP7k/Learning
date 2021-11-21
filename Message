@@ -1,0 +1,19 @@
+using System;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            Console.WriteLine("Введите сообщение:");
+            string message = Console.ReadLine();
+            Console.Write("Введите нужное количество сообщений: ");
+            int cicleCounter = Convert.ToInt32(Console.ReadLine());
+            while (cicleCounter-- > 0)
+            {
+                Console.WriteLine(message);
+            }
+        }
+    }
+}
