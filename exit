@@ -1,1 +1,23 @@
+using System;
 
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            string userInput;
+            Console.WriteLine("Внимание! Произошла авария - введите пароль для ВЫХОДА из положения.");
+            while (true)
+            {
+                userInput = Console.ReadLine();
+                if (userInput == "exit")
+                {
+                    Console.WriteLine("Утечка топлива устранена!");
+                    break;
+                }
+                Console.WriteLine("Утечка топлива, необходим ВЫХОД из этой ужасной ситуации!");
+            }
+        }
+    }
+}
