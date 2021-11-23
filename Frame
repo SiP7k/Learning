@@ -1,0 +1,30 @@
+using System;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            string name = null;
+            Console.Write("Введите ваше имя: ");
+            name = Console.ReadLine();
+            Console.Write("Ввведите символ для создания рамки для имени.");
+            string symbol = Console.ReadLine();
+            int numberOfChar = symbol.Length;
+            int frameWall = 1 + 1;
+            while (numberOfChar <= (name.Length + frameWall))
+            {
+                numberOfChar++;
+                Console.Write(symbol);
+            }
+            numberOfChar = symbol.Length;
+            Console.WriteLine("\n" + symbol + name + symbol);
+            while (numberOfChar <= (name.Length + frameWall))
+            {
+                numberOfChar++;
+                Console.Write(symbol);
+            }
+        }
+    }
+}
