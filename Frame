@@ -13,6 +13,7 @@ namespace Start
             string symbol = Console.ReadLine();
             int numberOfChar = symbol.Length;
             int frameWall = 1 + 1;
+            
             while (numberOfChar <= (name.Length + frameWall))
             {
                 numberOfChar++;
@@ -20,6 +21,7 @@ namespace Start
             }
             numberOfChar = symbol.Length;
             Console.WriteLine("\n" + symbol + name + symbol);
+            
             while (numberOfChar <= (name.Length + frameWall))
             {
                 numberOfChar++;
