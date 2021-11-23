@@ -1,0 +1,68 @@
+using System;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            string userName = "Аркадий";
+            string userInput = null;
+            while (userInput != "exit")
+            {
+                Console.WriteLine();
+                Console.WriteLine($"NewHero - создать нового персонажа\n" +
+                    $"ChangeLocation - отправиться в другой город\nAttackEnemy - напасть на врага\n" +
+                    $"Suicide - убить своего персонажа\nexit - Выход из игры");
+                Console.WriteLine();
+                userInput = Console.ReadLine();
+                switch (userInput)
+                {
+                    case "NewHero":
+                        Console.Write("Введите имя нового героя: ");
+                        userName = Console.ReadLine();
+                        Console.WriteLine($"Вы успешно сменили имя героя на {userName}");
+                        break;
+                    case "ChangeLocation":
+                        Console.WriteLine("Выберите следующую сцену для ваших приключений!\n1-Ривеллон\n2-Лес нежити\n3-Крутой берег");
+                        string newLocation = Console.ReadLine();
+                        switch (newLocation)
+                        {
+                            case "1":
+                                Console.WriteLine("Вы отправляетесь в Ривеллон!");
+                                break;
+                            case "2":
+                                Console.WriteLine("Вы отправляетесь в Лес нежити!");
+                                break;
+                            case "3":
+                                Console.WriteLine("Вы отправляетесь на Крутой берег!");
+                                break;
+                        }
+                        break;
+                    case "AttackEnemy":
+                        Console.WriteLine("Выберите противника:\n 1-Зомби\n2-Скелет\n3-Огр");
+                        string enemy = Console.ReadLine();
+                        switch (enemy)
+                        {
+                            case "1":
+                                Console.WriteLine("Вы убили зомби");
+                                break;
+                            case "2":
+                                Console.WriteLine("Вы убили скелета");
+                                break;
+                            case "3":
+                                Console.WriteLine("Вы убили огра");
+                                break;
+                        }
+                        break;
+                    case "Suicide":
+                        Console.WriteLine("Напишите эпитафию:");
+                        string epitaph = Console.ReadLine();
+                        Console.WriteLine($"Надпись на могиле вашего персонажа гласит - {epitaph}.");
+                        Console.WriteLine("Ваш персонаж наложил на себя руки, бесславная смерть, но вы можете начать новую игру с помощью команды NewHero;");
+                        break;
+                }
+            }
+        }
+    }
+}
