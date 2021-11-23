@@ -6,15 +6,74 @@ namespace Start
     {
         public static void Main()
         {
+            string userInput = null;
             int rubToUsd = 73;
             int rubToEuro = 80;
+            float usdToEuro = rubToUsd / rubToEuro;
+            float euroToUsd = rubToEuro / rubToUsd;
             Console.Write("Введите количество рублей: ");
             float rubles = Convert.ToSingle(Console.ReadLine());
             Console.Write("Введите количество долларов: ");
             float usd = Convert.ToSingle(Console.ReadLine());
             Console.Write("Введите количество евро: ");
             float euro = Convert.ToSingle(Console.ReadLine());
-
+            while (userInput !="7")
+            {
+                Console.WriteLine("Выберите нужный тип конвертации:\n1 - Рубли в доллары\n" +
+                    "2 - Рубли в евро\n3 - Доллары в рубли\n4 - Доллары в евро\n5 - Евро в рубли\n6 - Евро в доллары\n7 - Для выхода из конвертора");
+                userInput = Console.ReadLine();
+                switch (userInput)
+                {
+                    case "1":
+                        Console.Write("Введите количество рублей для конвертации: ");
+                        float rubInput = Convert.ToSingle(Console.ReadLine());
+                        rubles -= rubInput;
+                        float usdConverted = rubInput / rubToUsd;
+                        usd += usdConverted;
+                        Console.WriteLine($"Вы перевели {rubInput} RUB в {usdConverted}USD\nВаш баланс: {usd} USD\n{rubles} RUB\n {euro} EUR");
+                        break;
+                    case "2":
+                        Console.Write("Введите количество рублей для конвертации: ");
+                        rubInput = Convert.ToSingle(Console.ReadLine());
+                        rubles -= rubInput;
+                        float euroConverted = rubInput / rubToEuro;
+                        euro += euroConverted;
+                        Console.WriteLine($"Вы перевели {rubInput} RUB в {euroConverted}EUR\nВаш баланс: {usd} USD\n{rubles} RUB\n {euro} EUR");
+                        break;
+                    case "3":
+                        Console.Write("Введите количество долларов для конвертации: ");
+                        float usdInput = Convert.ToSingle(Console.ReadLine());
+                        usd -= usdInput;
+                        float rublesConverted = usdInput * rubToUsd;
+                        rubles += rublesConverted;
+                        Console.WriteLine($"Вы перевели {usdInput} USD в {rublesConverted}RUB\nВаш баланс: {usd} USD\n{rubles} RUB\n {euro} EUR");
+                        break;
+                    case "4":
+                        Console.Write("Введите количество долларов для конвертации: ");
+                        usdInput = Convert.ToSingle(Console.ReadLine());
+                        usd -= usdInput;
+                        euroConverted = usdInput * usdToEuro;
+                        euro += euroConverted;
+                        Console.WriteLine($"Вы перевели {usdInput}USD в {euroConverted} EUR\nВаш баланс: {usd} USD\n{rubles} RUB\n {euro} EUR");
+                        break;
+                    case "5":
+                        Console.Write("Введите количество евро для конвертации: ");
+                        float euroInput = Convert.ToSingle(Console.ReadLine());
+                        euro -= euroInput;
+                        rublesConverted = euroInput * rubToEuro;
+                        rubles += rublesConverted;
+                        Console.WriteLine($"Вы перевели {euroInput} EUR в {rublesConverted} RUB\nВаш баланс: {usd} USD\n{rubles} RUB\n {euro} EUR");
+                        break;
+                    case "6":
+                        Console.Write("Введите количество евро для конвертации: ");
+                        euroInput = Convert.ToSingle(Console.ReadLine());
+                        euro -= euroInput;
+                        usdConverted = euroInput * euroToUsd;
+                        usd += usdConverted;
+                        Console.WriteLine($"Вы перевели {euroInput} RUB в {usdConverted}$\nВаш баланс: {usd} USD\n{rubles} RUB\n {euro} EUR");
+                        break;
+                }
+            }
         }
     }
 }
