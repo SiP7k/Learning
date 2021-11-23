@@ -6,7 +6,10 @@ namespace Start
     {
         public static void Main()
         {
-            for(int number=7; number<100; number+=7) // Цикл "for" лучше подходит для вывода числовых последовательностей, он позволяет легко изменять условия цикла и получается короче и красивее по дизайну кода.
+            int step = 7;
+            int endNumbers = 100;
+            
+            for (int number = step; number < endNumbers; number += step)
             {
                 Console.WriteLine(number);
             }
