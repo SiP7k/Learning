@@ -1,0 +1,15 @@
+using System;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            for(int number=7; number<100; number+=7) // Цикл "for" лучше подходит для вывода числовых последовательностей, он позволяет легко изменять условия цикла и получается короче и красивее по дизайну кода.
+            {
+                Console.WriteLine(number);
+            }
+        }
+    }
+}
