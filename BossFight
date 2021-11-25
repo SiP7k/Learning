@@ -6,25 +6,97 @@ namespace Start
     {
         public static void Main()
         {
+            Random rand = new Random();
             int playerHealth = 100;
-            int playerPhysicalArmor = 100;
-            int playerMagicArmor = 100;
-            int bossHealth = 500;
-            int bossPhysicalArmor = 300;
-            int bossMagicArmor = 150;
-            int playerDamage = 20;
-            int bossDamage = 20;
+            int playerArmor = 50;
+            int bossHealth = 400;
+            int bossArmor = 300;
+            int adrenalin = 0;
+            int playerDamage;
+            int bossDamage;
+            int adrenalinForAbility2 = 50;
+            int adrenalinForAbility1 = 10;
+            string userInput;
+            bool skipEnemyTurn = false;
+            bool inShadow = false;
             Console.WriteLine("Открывая тяжёлые двери Большого зала вы уже не удивляетесь, что происходит автосохранение." +
-                " Доставая меч вы проклинаете разработчиков за предсказуемость этой игры");
+                " Доставая посох вы проклинаете разработчиков за предсказуемость этой игры");
 
-            while (playerHealth > 0 && bossHealth>0)
+            while (playerHealth > 0 && bossHealth > 0)
             {
-                if (bossPhysicalArmor == 0)
-                { 
-                    bossHealth -= playerDamage;
-                    Console.WriteLine($"Вы бьёте босса посохом и наносите {playerDamage} урона");
-                }
+                playerDamage = rand.Next(30, 60);
+                bossDamage = rand.Next(10, 20);
+                int playerAttack = playerDamage - 1 / 3 * bossArmor;
+                int playerTripleAttack = playerAttack * 3;
+                int bossAttack = bossDamage - 1 / 3 * playerArmor;
 
+                if (skipEnemyTurn == false)
+                {
+                    playerHealth -= bossAttack;
+                    Console.WriteLine($"Босс бьёт вашего персонажа дубиной и наносит {bossAttack} урона, у вас осталось {playerHealth} HP");
+                     
+                     if (playerHealth < 0)
+                    {
+                        Console.WriteLine("Вы погибли, удачи в следующий раз!");
+                        break;
+                    }   
+                }
+                skipEnemyTurn = false;
+                Console.WriteLine("Выберите действие:\n1 - Атака посохом\n2 - Жертва плоти\n3 - Увечющий удар\n4 - Укрыться в тенях\n5 - Атака из тени");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "1":
+                        bossHealth -= playerAttack;
+                        Console.WriteLine($"Ваш персонаж бьёт босса посохом и наносит {playerAttack} урона, у босса осталось {bossHealth} HP (Адреналин +10)");
+                        adrenalin += adrenalinForAbility1;
+                        break;
+                    case "2":
+                        playerHealth -= playerAttack;
+                        Console.WriteLine($"Ваш персонаж бьёт себя посохом по башке, жертвуя {playerAttack} HP и повышая адреналин на 50. У вас осталось {playerHealth} HP");
+                        adrenalin += adrenalinForAbility2;
+                        break;
+                    case "3":
+                        if (adrenalin>=adrenalinForAbility2)
+                        {
+                            bossHealth -= playerTripleAttack;
+                            Console.WriteLine($"Ваш персонаж наносит увечющий удар посохом, нанося {playerTripleAttack} урона. Из-за увечья противник пропускает следующий ход. У врага осталось {bossHealth} HP");
+                            skipEnemyTurn = true;
+                            adrenalin -= adrenalinForAbility2;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Недостаточно адреналина!");
+                            skipEnemyTurn = true;
+                            continue;
+                        }
+                    case "4":
+                        Console.WriteLine("Вы делаете шаг назад и растворяетесь в своей тени, враг не сможет вас атаковать один ход");
+                        skipEnemyTurn = true;
+                        inShadow=true;
+                        break;
+                    case "5":
+                        if (inShadow==true)
+                        {
+                            bossHealth -= playerTripleAttack;
+                            Console.WriteLine($"Позади противника появляется почти незаметная тень и вы выскакиваете из неё, нанося огромный урон противнику.Вы нанесли {playerTripleAttack}. У врага осталось {bossHealth} HP");
+                            inShadow = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Вы не в тени!");
+                            skipEnemyTurn = true;
+                            continue;
+                        }
+                }
+                if (bossHealth < 0)
+                {
+                    Console.WriteLine("Босс побеждён! После нанесения последнего удара, вы неожиданно обнаруживаете стрелу в своём правом колене, похоже на этом ваша дорога приключений заканчивается." +
+                        " Но недавно вы видели хорошую вакансию на охрану ворот Вайтрана, так что не всё так плохо");
+                }
             }
         }
     }
