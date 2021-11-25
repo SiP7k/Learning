@@ -1,0 +1,29 @@
+using System;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            string userInput = null;
+            string password = "Volta";
+            int tryCount = 4;
+            int endTry = 0;
+            
+            while (userInput != password && --tryCount > endTry)
+            {
+                Console.WriteLine("Введите пароль:");
+                userInput = Console.ReadLine();
+            }
+            if (tryCount == endTry)
+            {
+                Console.WriteLine("Кабум!");
+            }
+            else
+            {
+                Console.WriteLine("Секретное сообщение");
+            }    
+        }
+    }
+}
