@@ -6,24 +6,26 @@ namespace Start
     {
         public static void Main()
         {
-            string userInput = null;
-            string password = "Volta";
-            int tryCount = 4;
-            int endTry = 0;
-            
-            while (userInput != password && --tryCount > endTry)
+            int playerHealth = 100;
+            int playerPhysicalArmor = 100;
+            int playerMagicArmor = 100;
+            int bossHealth = 500;
+            int bossPhysicalArmor = 300;
+            int bossMagicArmor = 150;
+            int playerDamage = 20;
+            int bossDamage = 20;
+            Console.WriteLine("Открывая тяжёлые двери Большого зала вы уже не удивляетесь, что происходит автосохранение." +
+                " Доставая меч вы проклинаете разработчиков за предсказуемость этой игры");
+
+            while (playerHealth > 0 && bossHealth>0)
             {
-                Console.WriteLine("Введите пароль:");
-                userInput = Console.ReadLine();
+                if (bossPhysicalArmor == 0)
+                { 
+                    bossHealth -= playerDamage;
+                    Console.WriteLine($"Вы бьёте босса посохом и наносите {playerDamage} урона");
+                }
+
             }
-            if (tryCount == endTry)
-            {
-                Console.WriteLine("Кабум!");
-            }
-            else
-            {
-                Console.WriteLine("Секретное сообщение");
-            }    
         }
     }
 }
