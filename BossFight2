@@ -6,16 +6,21 @@ namespace Start
     {
         public static void Main()
         {
-            Random rand = new Random();
+            Random random = new Random();
             int playerHealth = 100;
             int playerArmor = 50;
             int bossHealth = 400;
             int bossArmor = 300;
             int adrenalin = 0;
-            int playerDamage;
-            int bossDamage;
+            int playerDamage = 50;
+            int bossDamage = 20;
+            int playerDamageLimitation = 10;
+            int bossDamageLimitation = 5;
+            int bossArmorDefense = 1 / 4 * bossArmor;
+            int playerArmorDefense = 1 / 4 * playerArmor;
             int adrenalinForAbility2 = 50;
-            int adrenalinForAbility1 = 10;
+            int adrenalinForAbility1 = 25;
+            int damageModificator = 3;
             string userInput;
             bool skipEnemyTurn = false;
             bool inShadow = false;
@@ -24,20 +29,21 @@ namespace Start
 
             while (playerHealth > 0 && bossHealth > 0)
             {
-                playerDamage = rand.Next(30, 60);
-                bossDamage = rand.Next(10, 20);
-                int playerAttack = playerDamage - 1 / 3 * bossArmor;
-                int playerTripleAttack = playerAttack * 3;
-                int bossAttack = bossDamage - 1 / 3 * playerArmor;
+                playerDamage = random.Next(playerDamage-playerDamageLimitation, playerDamage+playerDamageLimitation);
+                bossDamage = random.Next(bossDamage-bossDamageLimitation, bossDamage+bossDamageLimitation);
+                int playerAttack = playerDamage - bossArmorDefense;
+                int playerTripleAttack = playerAttack * damageModificator;
+                int bossAttack = bossDamage - playerArmorDefense;
 
                 if (skipEnemyTurn == false)
                 {
                     playerHealth -= bossAttack;
                     Console.WriteLine($"Босс бьёт вашего персонажа дубиной и наносит {bossAttack} урона, у вас осталось {playerHealth} HP");
+
                      if (playerHealth < 0)
                     {
                         Console.WriteLine("Вы погибли, удачи в следующий раз!");
-                        break;
+                        continue;
                     }   
                 }
                 skipEnemyTurn = false;
@@ -48,7 +54,7 @@ namespace Start
                 {
                     case "1":
                         bossHealth -= playerAttack;
-                        Console.WriteLine($"Ваш персонаж бьёт босса посохом и наносит {playerAttack} урона, у босса осталось {bossHealth} HP (Адреналин +10)");
+                        Console.WriteLine($"Ваш персонаж бьёт босса посохом и наносит {playerAttack} урона, у босса осталось {bossHealth} HP. Вы получаете {adrenalinForAbility1} адреналина");
                         adrenalin += adrenalinForAbility1;
                         inShadow = false;
                         break;
@@ -94,14 +100,18 @@ namespace Start
                             continue;
                         }
                     case "6":
-                        {
                             Console.WriteLine($"1)Атака посохом - обычный удар посохом, наносит немного урона и даёт {adrenalinForAbility1} адреналина" +
-                                $"\n2)Жертва плоти - ваш персонаж наносит урон сам себе и получает {adrenalinForAbility2}" +
-                                $"\n3)Увечащий удар - мощный удар, наносящий тройной урон, тратит {adrenalinForAbility2}" +
+                                $"\n2)Жертва плоти - ваш персонаж наносит урон сам себе и получает {adrenalinForAbility2} адреналина" +
+                                $"\n3)Увечащий удар - мощный удар, наносящий тройной урон, тратит {adrenalinForAbility2} адерналина" +
                                 $"\n4)Укрыться в тенях - войти в невидимость, противник пропустит один ход, также позволит нанести Атаку из тени" +
                                 $"\n5)Атака из тени - мощный удар, наносящий тройной урон");
+                            skipEnemyTurn=true;
                             break;
-                        }
+                    default:
+                        Console.WriteLine("Ошибка, введите корректную цифру и нажмите Enter.");
+                        skipEnemyTurn = true;
+                        break;
+
                 }
                 if (bossHealth < 0)
                 {
