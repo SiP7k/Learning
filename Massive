@@ -7,34 +7,35 @@ namespace Start
         public static void Main()
         {
             int[,] array = {
-                { 5, 3, 8 }, 
+                { 5, 3, 8 },
                 { 1, 6, 9 },
                 { 2, 7, 3 },
                 { 4, 3, 7 } };
             int sumSecondRow = 0;
-            int column = 0;
             int secondRow = 1;
+            int firstColumn = 0;
             int multipliedColumn = 1;
-            
-            foreach (int number in array)
+
+            for (int row = 0; row < array.GetLength(0); row++)
             {
-                Console.Write(number +" ");
+                for (int column = 0; column < array.GetLength(1); column++)
+                {
+                    Console.Write(array[row, column] + " ");
+                }
+                Console.WriteLine();
             }
-            Console.WriteLine();
-            
-            for (int row = 0; row<array.GetLength(0); row++)
+            for (int row = 0; row < array.GetLength(0); row++)
             {
                 if (row == secondRow)
                 {
-                    for (column=0; column < array.GetLength(1); column++)
+                    for (int column = 0; column < array.GetLength(1); column++)
                     {
-                        sumSecondRow += array[row,column];
+                        sumSecondRow += array[row, column];
                     }
-                    column = 0;
                 }
-                multipliedColumn *= array[row, column];
+                multipliedColumn *= array[row, firstColumn];
             }
-            Console.WriteLine(multipliedColumn);
+            Console.WriteLine("\n"+multipliedColumn);
             Console.WriteLine(sumSecondRow);
         }
     }
