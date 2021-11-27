@@ -15,11 +15,13 @@ namespace Start
             int column = 0;
             int secondRow = 1;
             int multipliedColumn = 1;
+            
             foreach (int number in array)
             {
                 Console.Write(number +" ");
             }
             Console.WriteLine();
+            
             for (int row = 0; row<array.GetLength(0); row++)
             {
                 if (row == secondRow)
@@ -31,7 +33,6 @@ namespace Start
                     column = 0;
                 }
                 multipliedColumn *= array[row, column];
-                
             }
             Console.WriteLine(multipliedColumn);
             Console.WriteLine(sumSecondRow);
