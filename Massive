@@ -1,0 +1,40 @@
+using System;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            int[,] array = {
+                { 5, 3, 8 }, 
+                { 1, 6, 9 },
+                { 2, 7, 3 },
+                { 4, 3, 7 } };
+            int sumSecondRow = 0;
+            int column = 0;
+            int secondRow = 1;
+            int multipliedColumn = 1;
+            foreach (int number in array)
+            {
+                Console.Write(number +" ");
+            }
+            Console.WriteLine();
+            for (int row = 0; row<array.GetLength(0); row++)
+            {
+                if (row == secondRow)
+                {
+                    for (column=0; column < array.GetLength(1); column++)
+                    {
+                        sumSecondRow += array[row,column];
+                    }
+                    column = 0;
+                }
+                multipliedColumn *= array[row, column];
+                
+            }
+            Console.WriteLine(multipliedColumn);
+            Console.WriteLine(sumSecondRow);
+        }
+    }
+}
