@@ -18,23 +18,24 @@ namespace Start
             }
             Console.WriteLine();
 
+            if (array[0] > array[1])
+            {
+                localMax = array[0];
+                Console.WriteLine($"{localMax} является локальным максимумом");
+            }
+
             for (int number = 0; number < array.Length; number++)
             {
-                if (number != 0 && number != arraySize - 1 && array[number] > array[number + 1] && array[number] > array[number - 1])
-                {
-                        localMax = array[number];
-                        Console.WriteLine($"{localMax} является локальным максимумом");
-                }
-                if (number == 0 && array[number] > array[number + 1])
+                if (number != 0 && number != array.Length - 1 && array[number] > array[number + 1] && array[number] > array[number - 1])
                 {
                     localMax = array[number];
                     Console.WriteLine($"{localMax} является локальным максимумом");
                 }
-                if (number == arraySize - 1 && array[number] > array[number - 1])
-                {
-                    localMax = array[number];
-                    Console.WriteLine($"{localMax} является локальным максимумом");
-                }
+            }
+            if (array[array.Length-1]>array[array.Length-2])
+            {
+                localMax = array[array.Length -1];
+                Console.WriteLine($"{localMax} является локальным максимумом");
             }
         }
     }
