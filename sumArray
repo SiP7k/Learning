@@ -1,0 +1,43 @@
+using System;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            Console.Write("Введите число или команды exit и sum.\nexit - выход из программы.\nsum - суммировать все введённые для этого числа.");
+            string userInput = null;
+            int sum = 0;
+            int[] numbers = new int[0];
+            
+            while (Convert.ToString(userInput) != "exit")
+            {
+                int[] tempNumbers = new int[numbers.Length + 1];
+                Console.Write("\nВведите число или команду: ");
+                userInput = Console.ReadLine();
+                
+                switch (userInput)
+                {
+                    case "exit":
+                        break;
+                    case "sum":
+                        for (int number = 0; number < numbers.Length; number++)
+                        {
+                            sum += numbers[number];
+                        }
+                        Console.WriteLine(sum);
+                        break;
+                    default:
+                        for (int i = 0; i < numbers.Length; i++)
+                        {
+                            tempNumbers[i] = numbers[i];
+                        }
+                        tempNumbers[tempNumbers.Length - 1] = Convert.ToInt32(userInput);
+                        numbers = tempNumbers;
+                        break;
+                }
+            }
+        }
+    }
+}
