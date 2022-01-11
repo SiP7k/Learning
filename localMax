@@ -1,0 +1,41 @@
+using System;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            int localMax = int.MinValue;
+            int arraySize = 30;
+            int[] array = new int[arraySize];
+            Random rand = new Random();
+
+            for (int number = 0; number < array.Length; number++)
+            {
+                array[number] = rand.Next(1, 100);
+                Console.Write(array[number] + " ");
+            }
+            Console.WriteLine();
+
+            for (int number = 0; number < array.Length; number++)
+            {
+                if (number != 0 && number != arraySize - 1 && array[number] > array[number + 1] && array[number] > array[number - 1])
+                {
+                        localMax = array[number];
+                        Console.WriteLine($"{localMax} является локальным максимумом");
+                }
+                if (number == 0 && array[number] > array[number + 1])
+                {
+                    localMax = array[number];
+                    Console.WriteLine($"{localMax} является локальным максимумом");
+                }
+                if (number == arraySize - 1 && array[number] > array[number - 1])
+                {
+                    localMax = array[number];
+                    Console.WriteLine($"{localMax} является локальным максимумом");
+                }
+            }
+        }
+    }
+}
