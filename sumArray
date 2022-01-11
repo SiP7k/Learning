@@ -8,20 +8,20 @@ namespace Start
         {
             Console.Write("Введите число или команды exit и sum.\nexit - выход из программы.\nsum - суммировать все введённые для этого числа.");
             string userInput = null;
-            int sum = 0;
             int[] numbers = new int[0];
-            
-            while (Convert.ToString(userInput) != "exit")
+
+            while (userInput != "exit")
             {
                 int[] tempNumbers = new int[numbers.Length + 1];
                 Console.Write("\nВведите число или команду: ");
                 userInput = Console.ReadLine();
-                
+
                 switch (userInput)
                 {
                     case "exit":
                         break;
                     case "sum":
+                        int sum = 0;
                         for (int number = 0; number < numbers.Length; number++)
                         {
                             sum += numbers[number];
