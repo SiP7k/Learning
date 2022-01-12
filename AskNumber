@@ -1,0 +1,28 @@
+using System;
+using System.IO;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            int result = AskNumber();
+
+        }
+        static int AskNumber()
+        {
+            bool isNumber = false;
+            int number = 0;
+            string userInput = null;
+
+            while (!isNumber)
+            {
+                Console.WriteLine("Введите число:");
+                userInput = Console.ReadLine();
+                isNumber = int.TryParse(userInput, out number);
+            }
+            return number;
+        }
+    }
+}
