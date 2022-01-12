@@ -1,0 +1,102 @@
+using System;
+using System.IO;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            bool isWorking = true;
+            string[] names = new string[0];
+            string[] positions = new string[0];
+            string userInput = null;
+
+            while (isWorking)
+            {
+                Console.WriteLine("1 - добавить досье\n2 - вывести все досье\n3 - удалить досье\n4 - поиск по фамилии\n5 - выход\n");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "1":
+                        Console.WriteLine("Введите ФИО:");
+                        names = AddInfo(names);
+                        Console.WriteLine("Введите должность:");
+                        positions = AddInfo(positions);
+                        Console.Clear();
+                        break;
+                    case "2":
+                        Console.Clear();
+                        PrintFile(names, positions);
+                        break;
+                    case "3":
+                        Console.WriteLine("Введите номер досье, которое вы хотите удалить: ");
+                        int numberOfFile = Convert.ToInt32(Console.ReadLine()) - 1;
+                        names = DeleteFile(names, numberOfFile);
+                        positions = DeleteFile(positions, numberOfFile);
+                        Console.Clear();
+                        break;
+                    case "4":
+                        Console.Clear();
+                        FindFile(names, positions);
+                        break;
+                    case "5":
+                        isWorking = false;
+                        break;
+                }
+            }
+        }
+        static string[] AddInfo(string[] info)
+        {
+            string[] tempInfo = new string[info.Length + 1];
+
+            for (int i = 0; i < info.Length; i++)
+            {
+                tempInfo[i] = info[i];
+            }
+            tempInfo[tempInfo.Length - 1] = Console.ReadLine();
+            info = tempInfo;
+            return info;
+        }
+
+        static void PrintFile(string[] info1, string[] info2)
+        {
+            for (int countInfo1 = 0; countInfo1 < info1.Length; countInfo1++)
+            {
+                Console.WriteLine($"{countInfo1 + 1}) {info1[countInfo1]} - {info2[countInfo1]} \n");
+            }
+        }
+        static string[] DeleteFile(string[] info, int number)
+        {
+            string[] tempFile = new string[info.Length - 1];
+
+            for (int i = 0; i < info.Length; i++)
+            {
+                if (i < number)
+                {
+                    tempFile[i] = info[i];
+                }
+                else if (i > number)
+                {
+                    tempFile[i - 1] = info[i];
+                }
+            }
+            info = tempFile;
+            return info;
+        }
+        static void FindFile(string[] info1, string[] info2)
+        {
+            Console.WriteLine("Введите фамилию для поиска досье");
+            string surname = Console.ReadLine();
+
+            for (int index = 0; index < info1.Length; index++)
+            {
+                if (info1[index].StartsWith(surname))
+                {
+                    Console.WriteLine($"{index+1}) {info1[index]} - {info2[index]} ");
+                }
+            }
+        }
+    }
+}
