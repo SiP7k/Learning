@@ -11,6 +11,7 @@ namespace Start
             string[] names = new string[0];
             string[] positions = new string[0];
             string userInput = null;
+            int numberOfFile = 0;
 
             while (isWorking)
             {
@@ -20,21 +21,15 @@ namespace Start
                 switch (userInput)
                 {
                     case "1":
-                        Console.WriteLine("Введите ФИО и должность:");
-                        AddFile(ref names, ref positions);
-                        Console.Clear();
+                        AddName(ref names, ref positions);
                         break;
                     case "2":
-                        Console.Clear();
                         PrintFile(names, positions);
                         break;
                     case "3":
-                        Console.WriteLine("Введите номер досье, которое вы хотите удалить: ");
-                        int numberOfFile = Convert.ToInt32(Console.ReadLine()) - 1;
-                        DeleteFile(ref names, ref positions, numberOfFile);
+                        DeleteFile(ref names, ref positions,numberOfFile);
                         break;
                     case "4":
-                        Console.Clear();
                         FindFile(names, positions);
                         break;
                     case "5":
@@ -43,34 +38,45 @@ namespace Start
                 }
             }
         }
-        static void AddFile(ref string[] names, ref string[] positions)
+        static void AddName(ref string[] names, ref string[] positions)
         {
+            Console.WriteLine("Введите ФИО и должность:");
             string[] tempNames = new string[names.Length + 1];
-            string[] tempPositions = new string[positions.Length + 1];
 
             for (int i = 0; i < names.Length; i++)
             {
                 tempNames[i] = names[i];
             }
+            tempNames[tempNames.Length - 1] = Console.ReadLine();
+            names = tempNames;
+            AddPosition(ref positions);
+            Console.Clear();
+        }
+        static void AddPosition(ref string[] positions)
+        {
+            string[] tempPositions = new string[positions.Length + 1];
+
             for (int i = 0; i < positions.Length; i++)
             {
                 tempPositions[i] = positions[i];
             }
-            tempNames[tempNames.Length - 1] = Console.ReadLine();
             tempPositions[tempPositions.Length - 1] = Console.ReadLine();
             positions = tempPositions;
-            names = tempNames;
         }
-
         static void PrintFile(string[] info1, string[] info2)
         {
+            Console.Clear();
+
             for (int countInfo1 = 0; countInfo1 < info1.Length; countInfo1++)
             {
                 Console.WriteLine($"{countInfo1 + 1}) {info1[countInfo1]} - {info2[countInfo1]} \n");
             }
         }
-        static void DeleteFile(ref string[] names, ref string[] positions, int number)
+        static void DeleteFile(ref string[] names, ref string[] positions,int number)
         {
+            Console.WriteLine("Введите номер досье, которое вы хотите удалить: ");
+            number = Convert.ToInt32(Console.ReadLine()) - 1;
+
             if (number < names.Length && number >= 0)
             {
                 string[] tempNames = new string[names.Length - 1];
@@ -97,6 +103,7 @@ namespace Start
         }
         static void FindFile(string[] info1, string[] info2)
         {
+            Console.Clear();
             Console.WriteLine("Введите фамилию для поиска досье");
             string surname = Console.ReadLine();
 
