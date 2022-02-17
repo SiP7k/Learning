@@ -21,13 +21,13 @@ namespace Start
                 switch (userInput)
                 {
                     case "1":
-                        AddName(ref names, ref positions);
+                        AddFile(ref names, ref positions);
                         break;
                     case "2":
                         PrintFile(names, positions);
                         break;
                     case "3":
-                        DeleteName(ref names, ref positions,numberOfFile);
+                        DeleteFile(ref names, ref positions, numberOfFile);
                         break;
                     case "4":
                         FindFile(names, positions);
@@ -38,59 +38,45 @@ namespace Start
                 }
             }
         }
+
         static void AddFile(ref string[] names, ref string[] positions)
         {
             Console.WriteLine("Введите ФИО и должность:");
-            string[] tempNames = new string[names.Length + 1];
-
-            for (int i = 0; i < names.Length; i++)
-            {
-                tempNames[i] = names[i];
-            }
-            tempNames[tempNames.Length - 1] = Console.ReadLine();
-            names = tempNames;
-            AddPosition(ref positions);
+            FillArray(ref names);
+            FillArray(ref positions);
             Console.Clear();
         }
-        static void AddPosition(ref string[] positions)
+        static void FillArray(ref string[] array)
         {
-            string[] tempPositions = new string[positions.Length + 1];
+            string[] tempArray = new string[array.Length + 1];
 
-            for (int i = 0; i < positions.Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
-                tempPositions[i] = positions[i];
+                tempArray[i] = array[i];
             }
-            tempPositions[tempPositions.Length - 1] = Console.ReadLine();
-            positions = tempPositions;
+            tempArray[tempArray.Length - 1] = Console.ReadLine();
+            array = tempArray;
         }
+
         static void PrintFile(string[] info1, string[] info2)
         {
             Console.Clear();
 
-            for (int countInfo1 = 0; countInfo1 < info1.Length; countInfo1++)
+            for (int indexInfo = 0; indexInfo < info1.Length; indexInfo++)
             {
-                Console.WriteLine($"{countInfo1 + 1}) {info1[countInfo1]} - {info2[countInfo1]} \n");
+                Console.WriteLine($"{indexInfo + 1}) {info1[indexInfo]} - {info2[indexInfo]} \n");
             }
         }
-        static void DeleteFile(ref string[] names, ref string[] positions,int number)
+
+        static void DeleteFile(ref string[] names, ref string[] positions, int number)
         {
             Console.WriteLine("Введите номер досье, которое вы хотите удалить: ");
             number = Convert.ToInt32(Console.ReadLine()) - 1;
 
             if (number < names.Length && number >= 0)
             {
-                string[] tempNames = new string[names.Length - 1];
-
-                for (int i = 0; i < number; i++)
-                {
-                    tempNames[i] = names[i];
-                }
-                for (int i = number; i < tempNames.Length; i++)
-                {
-                    tempNames[i] = names[i + 1];
-                }
-                DeletePosition(ref positions, number);
-                names = tempNames;
+                DeleteFromArray(ref names, number);
+                DeleteFromArray(ref positions, number);
                 Console.Clear();
             }
             else
@@ -98,21 +84,22 @@ namespace Start
                 Console.WriteLine("Такого индекса не существует\n");
             }
         }
-        static void DeletePosition(ref string[] positions, int number)
-        {
-                string[] tempPositions = new string[positions.Length - 1];
 
-                for (int i = 0; i < number; i++)
-                {
-                    tempPositions[i] = positions[i];
-                }
-                for (int i = number; i < tempPositions.Length; i++)
-                {
-                    tempPositions[i] = positions[i + 1];
-                }
-                positions = tempPositions;
-                Console.Clear();
+        static void DeleteFromArray(ref string[] array, int number)
+        {
+            string[] tempArray = new string[array.Length - 1];
+
+            for (int i = 0; i < number; i++)
+            {
+                tempArray[i] = array[i];
+            }
+            for (int i = number; i < tempArray.Length; i++)
+            {
+                tempArray[i] = array[i + 1];
+            }
+            array = tempArray;
         }
+
         static void FindFile(string[] info1, string[] info2)
         {
             Console.Clear();
