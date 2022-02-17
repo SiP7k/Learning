@@ -38,7 +38,7 @@ namespace Start
                 }
             }
         }
-        static void AddName(ref string[] names, ref string[] positions)
+        static void AddFile(ref string[] names, ref string[] positions)
         {
             Console.WriteLine("Введите ФИО и должность:");
             string[] tempNames = new string[names.Length + 1];
@@ -72,7 +72,7 @@ namespace Start
                 Console.WriteLine($"{countInfo1 + 1}) {info1[countInfo1]} - {info2[countInfo1]} \n");
             }
         }
-        static void DeleteName(ref string[] names, ref string[] positions,int number)
+        static void DeleteFile(ref string[] names, ref string[] positions,int number)
         {
             Console.WriteLine("Введите номер досье, которое вы хотите удалить: ");
             number = Convert.ToInt32(Console.ReadLine()) - 1;
