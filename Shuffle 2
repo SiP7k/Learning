@@ -1,0 +1,33 @@
+using System;
+using System.IO;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            int[] numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            Shuffle(numbers);
+
+            foreach(int number in numbers)
+            {
+                Console.Write(number);
+            }
+            Console.WriteLine();
+        }
+
+        public static void Shuffle(int[] array)
+        {
+            Random random = new Random();
+
+            for(int number = 0; number < array.Length; number++)
+            {
+                int tempRandom = random.Next(0, array.Length);
+                int tempNumber = array[number];
+                array[number] = array[tempRandom];
+                array[tempRandom] = tempNumber;
+            }
+        }
+    }
+}
