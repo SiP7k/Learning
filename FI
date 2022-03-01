@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        static void Main(string[] args)
+        {
+            Dictionary<string, string> names = new Dictionary<string, string>();
+            names.Add("Иванов", "Иван");
+            names.Add("Сахно", "Влад");
+            names.Add("Койлов", "Михаил");
+            names.Add("Калужин", "Денис");
+            names.Add("Дудин", "Дмитрий");
+            string userInput = null;
+
+            while (userInput == null || names.ContainsKey(userInput))
+            {
+                Console.Clear();
+                Console.WriteLine("Введите фамилию для поиска человека: ");
+                userInput = Console.ReadLine();
+
+                if (names.ContainsKey(userInput))
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Фамилия и имя человека - {userInput} {names[userInput]}");
+                }
+                else
+                {
+                    Console.WriteLine("Такой фамилии нет в списке");
+                }
+                Console.WriteLine("Нажмите Enter для продолжения...");
+                Console.ReadKey();
+            }
+        }
+    }
+}
