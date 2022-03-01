@@ -13,23 +13,31 @@ namespace Start
             int clientNumber = 5;
             Random random = new Random();
             int bankAccount = 0;
-            Console.WriteLine($"Суммы покупок клиентов: ");
             
             for (int i =0; i< clientNumber; i++)
             {
                 clients.Enqueue(random.Next(0, 1000));
             }
+            while(clients.Count!=0)
+            {
+                PrintClients(clients);
+                Console.WriteLine();
+                Console.WriteLine($"Покупка клиента - {clients.Peek()} RUB");
+                bankAccount += clients.Dequeue();
+                Console.WriteLine($"Ваш счёт: {bankAccount} RUB\nНажмите Enter для продолжения...");
+                Console.ReadKey();
+                Console.Clear();
+            }
+            Console.WriteLine("Клиенты закончились, очередь пуста");
+        }
+
+        static void PrintClients(Queue<int> clients)
+        {
+            Console.WriteLine($"Суммы покупок клиентов: ");
+
             foreach (var client in clients)
             {
                 Console.WriteLine(client + " RUB");
-            }
-            Console.WriteLine();
-
-            while(clients.Count!=0)
-            {
-                Console.WriteLine($"Следующий клиент - {clients.Peek()} RUB");
-                bankAccount += clients.Dequeue();
-                Console.WriteLine($"Ваш счёт: {bankAccount} RUB");
             }
         }
     }
