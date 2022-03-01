@@ -1,0 +1,36 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        static void Main(string[] args)
+        {
+            Queue<int> clients = new Queue<int>();
+            int clientNumber = 5;
+            Random random = new Random();
+            int bankAccount = 0;
+            Console.WriteLine($"Суммы покупок клиентов: ");
+            
+            for (int i =0; i< clientNumber; i++)
+            {
+                clients.Enqueue(random.Next(0, 1000));
+            }
+            foreach (var client in clients)
+            {
+                Console.WriteLine(client + " RUB");
+            }
+            Console.WriteLine();
+
+            while(clients.Count!=0)
+            {
+                Console.WriteLine($"Следующий клиент - {clients.Peek()} RUB");
+                bankAccount += clients.Dequeue();
+                Console.WriteLine($"Ваш счёт: {bankAccount} RUB");
+            }
+        }
+    }
+}
