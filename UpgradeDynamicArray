@@ -10,10 +10,11 @@ namespace Start
         public static void Main()
         {
             Console.Write("Введите число или команды exit и sum.\nexit - выход из программы.\nsum - суммировать все введённые для этого числа.");
-            string userInput=null;
+            string userInput = null;
+            bool isWorking = true;
             List<int> numbers = new List<int>();
 
-            while (userInput != "exit")
+            while (isWorking==true)
             {
                 Console.Write("\nВведите число или команду: ");
                 userInput = Console.ReadLine();
@@ -21,6 +22,7 @@ namespace Start
                 switch (userInput)
                 {
                     case "exit":
+                        isWorking = false;
                         break;
                     case "sum":
                         int sum = 0;
@@ -32,7 +34,7 @@ namespace Start
                         Console.WriteLine(sum);
                         break;
                     default:
-                        if (Int32.TryParse(userInput,out int result))
+                        if (Int32.TryParse(userInput, out int result))
                         {
                             numbers.Add(result);
                         }
