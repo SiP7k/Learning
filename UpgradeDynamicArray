@@ -1,1 +1,48 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            Console.Write("Введите число или команды exit и sum.\nexit - выход из программы.\nsum - суммировать все введённые для этого числа.");
+            string userInput=null;
+            List<int> numbers = new List<int>();
+
+            while (userInput != "exit")
+            {
+                Console.Write("\nВведите число или команду: ");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "exit":
+                        break;
+                    case "sum":
+                        int sum = 0;
+
+                        for (int number = 0; number < numbers.Count; number++)
+                        {
+                            sum += numbers[number];
+                        }
+                        Console.WriteLine(sum);
+                        break;
+                    default:
+                        if (Int32.TryParse(userInput,out int result))
+                        {
+                            numbers.Add(result);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Неправильный ввод данных. Введите число или одну из команд");
+                        }
+                        break;
+                }
+            }
+        }
+    }
+}
