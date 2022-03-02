@@ -1,0 +1,83 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            Dictionary<string, string> files = new Dictionary<string, string>();
+            bool isWorking = true;
+
+            while (isWorking)
+            {
+                Console.WriteLine("1 - добавить досье\n2 - вывести все досье\n3 - удалить досье\n4 - выход\n");
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "1":
+                        AddFile(files);
+                        break;
+                    case "2":
+                        PrintFile(files);
+                        break;
+                    case "3":
+                        DeleteFile(files);
+                        break;
+                    case "4":
+                        isWorking = false;
+                        break;
+                }
+            }
+        }
+
+        static void AddFile(Dictionary<string,string> files)
+        {
+            Console.Clear();
+            Console.WriteLine("Введите ФИО и должность:");
+            files.Add(Console.ReadLine(), Console.ReadLine());
+            Console.Clear();
+        }
+
+        static void PrintFile(Dictionary<string, string> files)
+        {
+            Console.Clear();
+
+            if (files.Count > 0)
+            {
+                Console.Clear();
+
+                foreach (var file in files)
+                {
+                    Console.WriteLine($"{file.Key} - {file.Value}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Пока тут пусто, добавьте новое доссье");
+            }
+            
+        }
+
+        static void DeleteFile(Dictionary<string, string> files)
+        {
+            Console.Clear();
+            Console.WriteLine("Введите ФИО, которое вы хотите удалить: ");
+            string fileToDelete = Console.ReadLine();
+
+            if (files.ContainsKey(fileToDelete))
+            {
+                files.Remove(fileToDelete);
+            }
+            else
+            {
+                Console.WriteLine("Такого досье не существует\n");
+            }
+            Console.Clear();
+        }
+    }
+}
