@@ -1,0 +1,37 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            Player player1 = new Player("Tom", 100, 25);
+            player1.ShowInfo();
+        }
+    }
+
+    class Player
+    {
+        private string _name;
+        private int _health;
+        private int _damage;
+
+        public Player(string name, int health, int damage)
+        {
+            Console.WriteLine("На поле появляется новый игрок");
+            _name = name;
+            _health = health;
+            _damage = damage;
+        }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"Имя игрока - {_name}\nHP - {_health}\nУрон - {_damage}");
+        }
+    }
+}
