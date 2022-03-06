@@ -56,15 +56,15 @@ namespace Start
     class Player
     {
         private string _nickname;
-        public int Number { get; private set; }
         private int _level;
+        public int Number { get; private set; }
         public bool IsBanned;
 
         public Player(string nickname, int number, int level = 1, bool isBanned = false)
         {
             _nickname = nickname;
-            Number = number;
             _level = level;
+            Number = number;
             IsBanned = isBanned;
         }
         
