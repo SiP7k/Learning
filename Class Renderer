@@ -22,11 +22,11 @@ namespace Start
         private string _name;
         private int _health;
         private int _damage;
-        public char SymbolOfPlayer { get; private set; }
+        public char Skin { get; private set; }
         public int PositionX { get; private set; }
         public int PositionY { get; private set; }
         
-        public Player(string name, int health, int damage, int positionX, int positionY, char symbolOfPlayer = '@')
+        public Player(string name, int health, int damage, int positionX, int positionY, char skin = '@')
         {
             Console.WriteLine("На поле появляется новый игрок");
             _name = name;
@@ -34,7 +34,7 @@ namespace Start
             _damage = damage;
             PositionX = positionX;
             PositionY = positionY;
-            SymbolOfPlayer = symbolOfPlayer;
+            Skin = skin;
             
         }
 
@@ -49,7 +49,7 @@ namespace Start
         public void DrawPlayer(Player player)
         {
             Console.SetCursorPosition(player.PositionX, player.PositionY);
-            Console.WriteLine($"{player.SymbolOfPlayer}");
+            Console.WriteLine($"{player.Skin}");
         }
     }
 }
