@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            Renderer renderer = new Renderer();
+            Player player1 = new Player("Tom", 100, 25, 10, 10);
+            player1.ShowInfo();
+            renderer.DrawPlayer(player1);
+        }
+    }
+
+    class Player
+    {
+        private string _name;
+        private int _health;
+        private int _damage;
+        public char SymbolOfPlayer { get; private set; }
+        public int PositionX { get; private set; }
+        public int PositionY { get; private set; }
+        
+        public Player(string name, int health, int damage, int positionX, int positionY, char symbolOfPlayer = '@')
+        {
+            Console.WriteLine("На поле появляется новый игрок");
+            _name = name;
+            _health = health;
+            _damage = damage;
+            PositionX = positionX;
+            PositionY = positionY;
+            SymbolOfPlayer = symbolOfPlayer;
+            
+        }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"Имя игрока - {_name}\nHP - {_health}\nУрон - {_damage}");
+        }
+    }
+    
+    class Renderer
+    {
+        public void DrawPlayer(Player player)
+        {
+            Console.SetCursorPosition(player.PositionX, player.PositionY);
+            Console.WriteLine($"{player.SymbolOfPlayer}");
+        }
+    }
+}
