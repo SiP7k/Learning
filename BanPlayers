@@ -10,41 +10,30 @@ namespace Start
     {
         public static void Main()
         {
-            List<Player> players = new List<Player>();
+            PlayerBase playerBase = new PlayerBase();
             bool isWorking = true;
-            
+
             while (isWorking == true)
             {
                 Console.WriteLine("1 - добавление игрока\n2 - забанить игрока\n3 - разбанить игрока\n4 - удаление игрока\n5 - показать информацию\n6 - выход");
                 string userInput = Console.ReadLine();
 
-                switch(userInput)
+                switch (userInput)
                 {
                     case "1":
-                        Console.Clear();
-                        Console.WriteLine("Введите никнейм нового игрока: ");
-                        Player player = new Player(Console.ReadLine(), players.Count);
-                        players.Add(player);
+                        playerBase.Add();
                         break;
                     case "2":
-                        Console.Clear();
-                        Console.WriteLine("Введите номер игрока, которого хотите забанить");
-                        players[Convert.ToInt32(Console.ReadLine()) - 1].IsBanned = true;
+                        playerBase.Ban();
                         break;
                     case "3":
-                        Console.Clear();
-                        Console.WriteLine("Введите номер игрока, которого хотите разбанить");
-                        players[Convert.ToInt32(Console.ReadLine()) - 1].IsBanned = false;
+                        playerBase.Unban();
                         break;
                     case "4":
-                        Console.Clear();
-                        Console.WriteLine("Введите номер игрока, которого хотите удалить");
-                        players.RemoveAt(Convert.ToInt32(Console.ReadLine()) - 1);
+                        playerBase.Delete();
                         break;
                     case "5":
-                        Console.Clear();
-                        Console.WriteLine("Введите номер игрока, информацию по которому вы хотите увидеть");
-                        players[Convert.ToInt32(Console.ReadLine()) - 1].ShowInfo();
+                        playerBase.Info();
                         break;
                     case "6":
                         isWorking = false;
@@ -55,11 +44,11 @@ namespace Start
     }
     class Player
     {
+        public int Number { get; private set; }
+        public bool IsBanned { private get; set; }
         private string _nickname;
         private int _level;
-        public int Number { get; private set; }
-        public bool IsBanned;
-
+        
         public Player(string nickname, int number, int level = 1, bool isBanned = false)
         {
             _nickname = nickname;
@@ -67,7 +56,10 @@ namespace Start
             Number = number;
             IsBanned = isBanned;
         }
-        
+        public void ShowInfo()
+        {
+            Console.WriteLine($"Номер - {Number + 1}\nНикнейм - {_nickname}\nУровень - {_level}\nСостояние - {PrintBan(IsBanned)}");
+        }
         private string PrintBan(bool isBanned)
         {
             if (isBanned)
@@ -79,10 +71,61 @@ namespace Start
                 return "не забанен";
             }
         }
+    }
+    class PlayerBase
+    {
+        List<Player> players = new List<Player>();
 
-        public void ShowInfo()
+        public void Add()
         {
-            Console.WriteLine($"Номер - {Number + 1}\nНикнейм - {_nickname}\nУровень - {_level}\nСостояние - {PrintBan(IsBanned)}");
+            Console.Clear();
+            Console.WriteLine("Введите никнейм нового игрока: ");
+            Player player = new Player(Console.ReadLine(), players.Count);
+            players.Add(player);
+        }
+        public void Ban()
+        {
+            Console.Clear();
+            Console.WriteLine("Введите номер игрока, которого хотите забанить");
+            int result = CheckInput();
+            if (result != 0)
+                players[result - 1].IsBanned = true;
+        }
+        public void Unban()
+        {
+            Console.Clear();
+            Console.WriteLine("Введите номер игрока, которого хотите разбанить");
+            int result = CheckInput();
+            if (result != 0)
+                players[result - 1].IsBanned = false;
+        }
+        public void Delete()
+        {
+            Console.Clear();
+            Console.WriteLine("Введите номер игрока, которого хотите удалить");
+            int result = CheckInput();
+            if (result != 0)
+                players.RemoveAt(result - 1);
+        }
+        public void Info()
+        {
+            Console.Clear();
+            Console.WriteLine("Введите номер игрока, информацию по которому вы хотите увидеть");
+            int result = CheckInput();
+            if (result!=0)
+            players[result - 1].ShowInfo();
+        }
+        public int CheckInput()
+        {
+            if (Int32.TryParse(Console.ReadLine(),out int result) && result > 0 && result <= players.Count)
+            {
+                return result;
+            }
+            else
+            {
+                Console.WriteLine("Неправильный ввод данных!");
+                return 0;
+            }
         }
     }
 }
