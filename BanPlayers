@@ -68,7 +68,7 @@ namespace Start
             IsBanned = isBanned;
         }
         
-        private string PrintIsBanned(bool isBanned)
+        private string PrintBan(bool isBanned)
         {
             if (isBanned)
             {
@@ -82,7 +82,7 @@ namespace Start
 
         public void ShowInfo()
         {
-            Console.WriteLine($"Номер - {Number + 1}\nНикнейм - {_nickname}\nУровень - {_level}\nСостояние - {PrintIsBanned(IsBanned)}");
+            Console.WriteLine($"Номер - {Number + 1}\nНикнейм - {_nickname}\nУровень - {_level}\nСостояние - {PrintBan(IsBanned)}");
         }
     }
 }
