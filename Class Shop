@@ -47,17 +47,17 @@ namespace Start
     }
     class Person
     {
+        private List<Item> _inventory = new List<Item>();
         public string Name { get; private set; }
         public int Money { get; private set; }
         public int InventoryPositionX { get; private set; }
         public int InventoryPositionY { get; private set; }
-        private List<Item> _inventory = new List<Item>();
-
+        
         public Person(List<Item> inventory, int money, string name, int inventoryPositionX = 30, int inventoryPositionY = 10)
         {
+            _inventory = inventory;
             InventoryPositionX = inventoryPositionX;
             InventoryPositionY = inventoryPositionY;
-            _inventory = inventory;
             Money = money;
             Name = name;
         }
@@ -71,10 +71,19 @@ namespace Start
             if (Int32.TryParse(item, out int result) && result <= seller._inventory.Count && result > 0)
             {
                 Item itemToAdd = seller._inventory[result - 1];
-                seller._inventory.RemoveAt(result - 1);
-                _inventory.Add(itemToAdd);
-                Money -= itemToAdd.Price;
-                seller.Money += itemToAdd.Price;
+
+                if (Money >= itemToAdd.Price)
+                {
+                    seller._inventory.RemoveAt(result - 1);
+                    _inventory.Add(itemToAdd);
+                    Money -= itemToAdd.Price;
+                    seller.Money += itemToAdd.Price;
+                }
+                else
+                {
+                    Console.WriteLine("Не хватает денег! Нажмите любую кнопку для продолжения...");
+                    Console.ReadKey();
+                }
             }
             else
             {
