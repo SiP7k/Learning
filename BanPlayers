@@ -21,19 +21,19 @@ namespace Start
                 switch (userInput)
                 {
                     case "1":
-                        playerBase.Add();
+                        playerBase.AddPlayer();
                         break;
                     case "2":
-                        playerBase.Ban();
+                        playerBase.BanPlayer();
                         break;
                     case "3":
-                        playerBase.Unban();
+                        playerBase.UnbanPlayer();
                         break;
                     case "4":
-                        playerBase.Delete();
+                        playerBase.DeletePlayer();
                         break;
                     case "5":
-                        playerBase.Info();
+                        playerBase.ShowPlayerInfo();
                         break;
                     case "6":
                         isWorking = false;
@@ -58,13 +58,17 @@ namespace Start
         }
         public void ShowInfo()
         {
-            Console.WriteLine($"Номер - {Number + 1}\nНикнейм - {_nickname}\nУровень - {_level}\nСостояние - {GetBan(_isBanned)}");
+            Console.WriteLine($"Номер - {Number + 1}\nНикнейм - {_nickname}\nУровень - {_level}\nСостояние - {StatusOfBan(_isBanned)}");
         }
-        public void SetIsBanned()
+        public void Ban()
         {
             _isBanned = true;
         }
-        private string GetBan(bool isBanned)
+        public void Unban()
+        {
+            _isBanned = false;
+        }
+        private string StatusOfBan(bool isBanned)
         {
             if (isBanned)
             {
@@ -78,48 +82,52 @@ namespace Start
     }
     class PlayerBase
     {
-        List<Player> _players = new List<Player>();
+        private List<Player> _players = new List<Player>();
 
-        public void Add()
+        public void AddPlayer()
         {
             Console.Clear();
             Console.WriteLine("Введите никнейм нового игрока: ");
             Player player = new Player(Console.ReadLine(), _players.Count);
             _players.Add(player);
         }
-        public void Ban()
+        public void BanPlayer()
         {
             Console.Clear();
             Console.WriteLine("Введите номер игрока, которого хотите забанить");
-            int result = ConvertInput();
+            int result = ReadInput();
+
             if (result != 0)
-                _players[result - 1].SetIsBanned();
+                _players[result - 1].Ban();
         }
-        public void Unban()
+        public void UnbanPlayer()
         {
             Console.Clear();
             Console.WriteLine("Введите номер игрока, которого хотите разбанить");
-            int result = ConvertInput();
+            int result = ReadInput();
+
             if (result != 0)
-                _players[result - 1].SetIsBanned();
+                _players[result - 1].Unban();
         }
-        public void Delete()
+        public void DeletePlayer()
         {
             Console.Clear();
             Console.WriteLine("Введите номер игрока, которого хотите удалить");
-            int result = ConvertInput();
+            int result = ReadInput();
+
             if (result != 0)
                 _players.RemoveAt(result - 1);
         }
-        public void Info()
+        public void ShowPlayerInfo()
         {
             Console.Clear();
             Console.WriteLine("Введите номер игрока, информацию по которому вы хотите увидеть");
-            int result = ConvertInput();
+            int result = ReadInput();
+
             if (result != 0)
                 _players[result - 1].ShowInfo();
         }
-        public int ConvertInput()
+        private int ReadInput()
         {
             if (Int32.TryParse(Console.ReadLine(), out int result) && result > 0 && result <= _players.Count)
             {
