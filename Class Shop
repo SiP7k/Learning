@@ -33,10 +33,10 @@ namespace Start
                 switch (userInput)
                 {
                     case "1":
-                        player.ChangeOwner(salesman);
+                        player.SellItem(salesman);
                         break;
                     case "2":
-                        salesman.ChangeOwner(player);
+                        salesman.SellItem(player);
                         break;
                     case "3":
                         isTrading = false;
@@ -47,34 +47,34 @@ namespace Start
     }
     class Person
     {
-        public string _name { get; private set; }
-        public int _money { get; private set; }
-        public int _inventoryPositionX { get; private set; }
-        public int _inventoryPositionY { get; private set; }
-        public List<Item> _inventory { get; private set; } = new List<Item>();
+        public string Name { get; private set; }
+        public int Money { get; private set; }
+        public int InventoryPositionX { get; private set; }
+        public int InventoryPositionY { get; private set; }
+        private List<Item> _inventory = new List<Item>();
 
         public Person(List<Item> inventory, int money, string name, int inventoryPositionX = 30, int inventoryPositionY = 10)
         {
-            _inventoryPositionX = inventoryPositionX;
-            _inventoryPositionY = inventoryPositionY;
+            InventoryPositionX = inventoryPositionX;
+            InventoryPositionY = inventoryPositionY;
             _inventory = inventory;
-            _money = money;
-            _name = name;
+            Money = money;
+            Name = name;
         }
-        public void ChangeOwner(Person oldOwner)
+        public void SellItem(Person seller)
         {
             Console.Clear();
-            Renderer.ShowInventory(oldOwner);
+            Renderer.ShowInventory(seller);
             Console.WriteLine("Введите номер предмета: ");
             string item = Console.ReadLine();
 
-            if (Int32.TryParse(item, out int result) && result < oldOwner._inventory.Count && result > 0)
+            if (Int32.TryParse(item, out int result) && result <= seller._inventory.Count && result > 0)
             {
-                Item itemToAdd = oldOwner._inventory[result - 1];
-                oldOwner._inventory.RemoveAt(result - 1);
+                Item itemToAdd = seller._inventory[result - 1];
+                seller._inventory.RemoveAt(result - 1);
                 _inventory.Add(itemToAdd);
-                _money -= itemToAdd._price;
-                oldOwner._money += itemToAdd._price;
+                Money -= itemToAdd.Price;
+                seller.Money += itemToAdd.Price;
             }
             else
             {
@@ -86,41 +86,48 @@ namespace Start
         {
             _inventory.Add(item);
         }
+        public Item[] GiveCopyOfInventory()
+        {
+            Item[] tempInventory = new Item[_inventory.Count];
+            _inventory.CopyTo(tempInventory);
+            return tempInventory; 
+        }
     }
     class Item
     {
-        public int _price { get; private set; }
-        public string _name { get; private set; }
+        public int Price { get; private set; }
+        public string Name { get; private set; }
+
         public Item(int price, string name)
         {
-            _name = name;
-            _price = price;
+            Name = name;
+            Price = price;
         }
     }
     class Renderer
     {
         public static void DrawTradeWindow(Person player, Person salesman)
         {
-            Console.SetCursorPosition(player._inventoryPositionX, player._inventoryPositionY);
+            Console.SetCursorPosition(player.InventoryPositionX, player.InventoryPositionY);
             ShowInventory(player);
-            Console.SetCursorPosition(salesman._inventoryPositionX, salesman._inventoryPositionY);
+            Console.SetCursorPosition(salesman.InventoryPositionX, salesman.InventoryPositionY);
             ShowInventory(salesman);
             Console.WriteLine();
         }
         public static void ShowInventory(Person person)
         {
             int emptyLines = 2;
-            Console.WriteLine($"Инвентарь {person._name}: ");
+            Console.WriteLine($"Инвентарь {person.Name}: ");
 
-            for (int itemNumber = 0; itemNumber < person._inventory.Count; itemNumber++)
+            for (int itemNumber = 0; itemNumber < person.GiveCopyOfInventory().Length; itemNumber++)
             {
-                Console.SetCursorPosition(person._inventoryPositionX, person._inventoryPositionY + emptyLines + itemNumber);
-                Console.WriteLine((itemNumber + 1) + ") " + person._inventory[itemNumber]._name + " - " + person._inventory[itemNumber]._price + " золотых");
+                Console.SetCursorPosition(person.InventoryPositionX, person.InventoryPositionY + emptyLines + itemNumber);
+                Console.WriteLine((itemNumber + 1) + ") " + person.GiveCopyOfInventory()[itemNumber].Name + " - " + person.GiveCopyOfInventory()[itemNumber].Price + " золотых");
 
-                if (itemNumber == person._inventory.Count - 1)
+                if (itemNumber == person.GiveCopyOfInventory().Length - 1)
                 {
-                    Console.SetCursorPosition(person._inventoryPositionX, person._inventoryPositionY + emptyLines + itemNumber+2);
-                    Console.WriteLine($"Деньги: {person._money} золотых");
+                    Console.SetCursorPosition(person.InventoryPositionX, person.InventoryPositionY + emptyLines + itemNumber + 2);
+                    Console.WriteLine($"Деньги: {person.Money} золотых");
                 }
             }
         }
