@@ -1,0 +1,38 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+        }
+    }
+    abstract class Person
+    {
+        public List<Product> products = new List <Product>();
+
+
+    }
+    class Player : Person
+    {
+
+    }
+    class Salesman : Person
+    {
+        Product product 
+    }
+    class Product
+    {
+        private int _price;
+        public Product(int price)
+        {
+            _price = price;
+        }
+    }
+   
+}
