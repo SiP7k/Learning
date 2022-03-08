@@ -11,88 +11,108 @@ namespace Start
         public static void Main()
         {
             bool isWorking = true;
-            Random rand = new Random();
-            List<City> cities = new List<City>();
-            cities.Add (new City("Москва"));
-            cities.Add(new City("Питер"));
-            cities.Add(new City("Казань"));
-            cities.Add(new City("Владивосток"));
+            Random random = new Random();
             Renderer renderer = new Renderer(0,0);
-            
+            int minPassangers = 100;
+            int maxPassangers = 1000;
+            City.Add();
+            int indexOfStartCity = 0;
+
             while (isWorking)
             {
                 Console.Clear();
                 int numberOfCarriages = 0;
-                int numberOfPassangers = rand.Next(100, 1000);
-                Train train = new Train(new List<Carriage>(), numberOfPassangers, numberOfCarriages, cities[0], cities[0], numberOfPassangers);
+                int numberOfPassangers = random.Next(minPassangers, maxPassangers);
+                Train train = new Train(new List<Carriage>(), numberOfPassangers, numberOfCarriages, City.GiveCity(indexOfStartCity), City.GiveCity(indexOfStartCity), numberOfPassangers);
+                Direction direction = new Direction(train);
                 renderer.DrawInfoWindow(train.Location.Name, train.Direction.Name, train.NumberOfPassangersOut, train.NumberOfCarriages);
-                Console.WriteLine("Выберите направление:\n1 - Москва\n2 - Питер\n3 - Казань\n4 - Владивосток\n5- Выйти из программы");
-                string userInput = Console.ReadLine();
-                Console.Clear();
-                
-                switch (userInput)
+                City.PrintCities();
+                direction.Choose();  
+            }
+        }
+    }
+    class Direction
+    {
+        private Train _train;
+        public Direction(Train train)
+        {
+            _train = train;
+        }
+        public void Choose()
+        {
+            Console.WriteLine("Введите номер следующего города:");
+            string userInput = Console.ReadLine();
+
+            if (Int32.TryParse(userInput, out int result) && result > 0 && result <= City.GiveCity(result - 2).GiveCopyOfCities().Length)
+            {
+                int indexOfCity = result - 1;
+
+                switch (result)
                 {
-                    case "1":
-                        train.GoToNextCity(cities,0);
+                    case 1:
+                        _train.GoToNextCity(City.GiveCity(indexOfCity));
                         break;
-                    case "2":
-                        train.GoToNextCity(cities,1);
+                    case 2:
+                        _train.GoToNextCity(City.GiveCity(indexOfCity));
                         break;
-                    case "3":
-                        train.GoToNextCity(cities,2);
+                    case 3:
+                        _train.GoToNextCity(City.GiveCity(indexOfCity));
                         break;
-                    case "4":
-                        train.GoToNextCity(cities,3);
-                        break;
-                    case "5":
-                        isWorking = false;
+                    case 4:
+                        _train.GoToNextCity(City.GiveCity(indexOfCity));
                         break;
                 }
+            }
+            else
+            {
+                Console.WriteLine("Неправильный ввод данных");
+                Console.ReadKey();
             }
         }
     }
     class Train
     {
+        private int _numberOfPassangersIn;
+        private List<Carriage> _carriages = new List<Carriage>();
         public City Location { get; private set;}
         public City Direction { get; private set; }
         public int NumberOfPassangersOut { get; private set; }
         public int NumberOfCarriages { get; private set; }
-        private int _numberOfPassangersIn;
-        private List<Carriage> _carriages = new List<Carriage>();
-
+        
         public Train(List<Carriage> carriages, int numberOfPassangers, int numberOfCarriages, City location, City direction, int numberOfPassangersIn)
         {
+            _carriages = carriages;
+            _numberOfPassangersIn = numberOfPassangersIn;
             Location = location;
             Direction = direction;
             NumberOfPassangersOut = numberOfPassangers;
             NumberOfCarriages = numberOfCarriages;
-            _carriages = carriages;
-            _numberOfPassangersIn = numberOfPassangersIn;
         }
-        public void Fill()
+        public void Fill(int maxPlace,int price)
         {
-            NumberOfCarriages = GetNumberCarriages();
-            
+            NumberOfCarriages = GetNumberCarriages(maxPlace);
+
             for (int i = 0; i < NumberOfCarriages; i++)
             {
                 List<Passanger> passangers = new List<Passanger>();
-                _carriages.Add(new Carriage(passangers, 50, 20));
+                _carriages.Add(new Carriage(passangers, maxPlace, price));
                 NumberOfPassangersOut = _carriages[i].Fill(NumberOfPassangersOut);
             }
         }
-        public int GetNumberCarriages()
+        public int GetNumberCarriages(int maxPlace)
         {
-            int numberOfCarriages = NumberOfPassangersOut / 50;
+            int numberOfCarriages = NumberOfPassangersOut / maxPlace;
+            int lastCarriage = 1;
 
-            if (NumberOfPassangersOut % 50 != 0)
+            if (NumberOfPassangersOut % maxPlace != 0)
             {
-                numberOfCarriages += 1;
+                numberOfCarriages += lastCarriage;
             }
             return numberOfCarriages;
         }
         public bool CreateWay(City city)
         {
-            Console.SetCursorPosition(10, 10);
+            
             Direction = city;
 
             if (Direction == Location)
@@ -103,18 +123,19 @@ namespace Start
             }
             else
             {
-                Console.WriteLine($"Создано направление {Location.Name} - {Direction.Name}\nНажмите любую клавишу для продолжения...");
-               
+                Console.WriteLine($"Вы едете из {Location.Name} в {Direction.Name}\nНажмите любую клавишу для продолжения...");
                 return true;
             }
         }
-        public void GoToNextCity(List<City> cities, int numberCity)
+        public void GoToNextCity(City city)
         {
+            int maxPlace = 50;
+            int price = 20;
             Renderer renderer = new Renderer(0, 0);
 
-            if (CreateWay(cities[numberCity]))
+            if (CreateWay(city))
             {
-                Fill();
+                Fill(maxPlace, price);
                 renderer.DrawInfoWindow(Location.Name, Direction.Name, _numberOfPassangersIn, NumberOfCarriages);
             }
             Console.ReadKey();
@@ -122,34 +143,37 @@ namespace Start
     }
     class Carriage
     {
-        public int _maxPlace { get; private set; }
-        public int _price { get; private set; }
+        public int MaxPlace { get; private set; }
+        public int Price { get; private set; }
         private List<Passanger> _passangers = new List<Passanger>();
-        Random rand = new Random();
+        private Random _random = new Random();
 
-        public Carriage(List<Passanger> passangers, int maxPlace, int price)
+        public Carriage(List<Passanger> passangers, int maxPlace=50, int price=20)
         {
-            _maxPlace = maxPlace;
-            _price = price;
+            MaxPlace = maxPlace;
+            Price = price;
             _passangers = passangers;
         }
         public int Fill(int numberOfPassangers)
         {
-            if (numberOfPassangers >= _maxPlace)
+            int minPassangerMoney = 100;
+            int maxPassangerMoney = 150;
+
+            if (numberOfPassangers >= MaxPlace)
             {
-                for (int i = 0; i < _maxPlace; i++)
+                for (int i = 0; i < MaxPlace; i++)
                 {
-                    _passangers.Add(new Passanger(rand.Next(100, 150)));
-                    _passangers[i].BuyTicket(_price);
+                    _passangers.Add(new Passanger(_random.Next(minPassangerMoney, maxPassangerMoney)));
+                    _passangers[i].BuyTicket(Price);
                 }
-                return numberOfPassangers -= _maxPlace;
+                return numberOfPassangers -= MaxPlace;
             }
             else
             {
                 for (int i = 0; i < numberOfPassangers; i++)
                 {
-                    _passangers.Add(new Passanger(rand.Next(50, 150)));
-                    _passangers[i].BuyTicket(_price);
+                    _passangers.Add(new Passanger(_random.Next(minPassangerMoney, maxPassangerMoney)));
+                    _passangers[i].BuyTicket(Price);
                 }
                 return numberOfPassangers;
             }
@@ -158,10 +182,34 @@ namespace Start
     class City
     {
         public string Name { get; private set; }
-
+        private static List<City> _cities = new List<City>();
         public City(string name)
         {
             Name = name;
+        }
+        public static void Add()
+        {
+            _cities.Add(new City("Москва"));
+            _cities.Add(new City("Питер"));
+            _cities.Add(new City("Казань"));
+            _cities.Add(new City("Владивосток"));
+        }    
+        public static void PrintCities()
+        {
+            for (int i = 0; i < _cities.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}) - {_cities[i].Name}");
+            }
+        }
+        public static City GiveCity(int NumberOfCity)
+        {
+            return _cities[NumberOfCity];
+        }
+        public City[] GiveCopyOfCities()
+        {
+            City[] tempCities = new City[_cities.Count];
+            _cities.CopyTo(tempCities);
+            return tempCities;
         }
     }
     class Passanger
@@ -188,19 +236,19 @@ namespace Start
     }
     class Renderer
     {
-        private int _x;
-        private int _y;
+        private int _infoWindowPositionX;
+        private int _infoWindowPositionY;
 
-        public Renderer(int x, int y)
+        public Renderer(int infoWindowPositionX, int infoWindowPositionY)
         {
-            _x = x;
-            _y = y;
+            _infoWindowPositionX = infoWindowPositionX;
+            _infoWindowPositionY = infoWindowPositionY;
         }
         public void DrawInfoWindow(string location,string direction, int numberOfPassangers, int numberOfCarriages)
         {
-            Console.SetCursorPosition(_x,_y);
+            Console.SetCursorPosition(_infoWindowPositionX,_infoWindowPositionY);
             Console.WriteLine($"Рейс:           {location} - {direction}\nЧеловек на борту: {numberOfPassangers}\nКоличество вагонов: {numberOfCarriages}");
-            Console.SetCursorPosition(10, 10);
+            Console.SetCursorPosition(0, 10);
         }
     }
 }
