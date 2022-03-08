@@ -112,7 +112,6 @@ namespace Start
         }
         public bool CreateWay(City city)
         {
-            
             Direction = city;
 
             if (Direction == Location)
@@ -143,10 +142,10 @@ namespace Start
     }
     class Carriage
     {
-        public int MaxPlace { get; private set; }
-        public int Price { get; private set; }
         private List<Passanger> _passangers = new List<Passanger>();
         private Random _random = new Random();
+        public int MaxPlace { get; private set; }
+        public int Price { get; private set; }
 
         public Carriage(List<Passanger> passangers, int maxPlace=50, int price=20)
         {
@@ -181,8 +180,9 @@ namespace Start
     }
     class City
     {
-        public string Name { get; private set; }
         private static List<City> _cities = new List<City>();
+        public string Name { get; private set; }
+
         public City(string name)
         {
             Name = name;
@@ -220,7 +220,6 @@ namespace Start
         {
             _money = money;
         }
-
         public void BuyTicket(int price)
         {
             if (_money >= price)
