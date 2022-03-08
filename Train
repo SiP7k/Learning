@@ -149,9 +149,9 @@ namespace Start
 
         public Carriage(List<Passanger> passangers, int maxPlace=50, int price=20)
         {
+            _passangers = passangers;
             MaxPlace = maxPlace;
             Price = price;
-            _passangers = passangers;
         }
         public int Fill(int numberOfPassangers)
         {
