@@ -1,0 +1,141 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            Random rand = new Random();
+            bool isWorking = true;
+            List<City> cities = new List<City>();
+            cities.Add(new City("Москва"));
+            cities.Add(new City("Питер"));
+            cities.Add(new City("Казань"));
+            cities.Add(new City("Владивосток"));
+
+            Train train = new Train(new List<Carriage> { }, cities[0], cities[0], rand.Next(100, 500));
+
+            while (isWorking)
+            {
+                Console.WriteLine("Выберите направление:\n1 - Москва\n2 - Питер\n3 - Казань\n4 - Владивосток");
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "1":
+                        train.CreateCarriages();
+                        train.ShowCarriages();
+                        break;
+                    case "2":
+                        break;
+                    case "3":
+                        break;
+                    case "4":
+                        break;
+                }
+            }
+        }
+    }
+    class Train
+    {
+        Random rand = new Random();
+        private List<Carriage> _carriages = new List<Carriage>();
+        private int _passangersOutTrain;
+        private int _money;
+        private City _location;
+        private City _direction;
+
+        public Train(List<Carriage> carriages, City location, City direction, int passangersOutTrain, int money = 0)
+        {
+            _carriages = carriages;
+            _money = money;
+            _location = location;
+            _direction = direction;
+            _passangersOutTrain = passangersOutTrain;
+        }
+        public void CreateCarriages()
+        {
+            bool allOnBoard = false;
+            int passangersOnTrain = 0;
+
+            while (!allOnBoard)
+            {
+                _carriages.Add(new Carriage(20, new List<Passanger> { }, 100));
+                _carriages.Add(new Carriage(50, new List<Passanger> { }, 50));
+                _carriages.Add(new Carriage(80, new List<Passanger> { }, 20));
+                
+                
+            }
+        }
+        public void ShowCarriages()
+        {
+            for (int i = 0; i < _carriages.Count; i++)
+            {
+                Console.WriteLine($"{i}) - {_carriages[i]}");
+            }
+        }    
+        public void GetNumberOfPassangersOutTrain()
+        {
+            
+        }
+    }
+    class Carriage
+    {
+        protected int _price;
+        protected int _maxPlace;
+        private int _numberOfPassangers;
+        protected List<Passanger> _passangers = new List<Passanger>();
+        Random rand = new Random();
+
+        public Carriage(int maxPlace, List<Passanger> passangers, int price, int numberOfPassangers = 0)
+        {
+            _maxPlace = maxPlace;
+            _passangers = passangers;
+            _price = price;
+            _numberOfPassangers = numberOfPassangers;
+
+            FillCarriage();
+        }
+
+        public void FillCarriage(int numberOfPassangers)
+        {
+            for (int i = 0; i < numberOfPassangers; i++)
+            {
+                _passangers.Add(new Passanger(rand.Next(5, 150)));
+                _passangers[i].PutOnTrain();
+            }
+        }
+    }
+    class Passanger
+    {
+        private int _money;
+        private bool _onTrain;
+        public Passanger(int money, bool onTrain = false)
+        {
+            _money = money;
+            _onTrain = onTrain;
+        }
+        public void PutOnTrain()
+        {
+            _onTrain = true;
+        }
+    }
+    class City
+    {
+        private string _name;
+
+        public City(string name)
+        {
+            _name = name;
+        }
+    }
+    class Renderer
+    {
+
+    }
+}
