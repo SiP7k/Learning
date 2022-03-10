@@ -10,54 +10,109 @@ namespace Start
     {
         public static void Main()
         {
-            Barbarian barbarian = new Barbarian(100, 20, "Анатолий", 10, 1.5f);
-            Paladin paladin = new Paladin(100, 15, "Павел", 10);
+            Arena arena = new Arena(new List<Fighter>());
+
+            arena.ChooseFighters();
             
-            
-            while (barbarian.IsAlive && paladin.IsAlive)
+
+
+            while (arena.FirstFighter.IsAlive && arena.SecondFighter.IsAlive)
             {
-               
+                arena.GoFight();
             }
         }
     }
     class Arena
     {
+        Random random = new Random();
         private List<Fighter> _fighters = new List<Fighter>();
-        public void StartBattle()
+        public Fighter FirstFighter { get; private set; }
+        public Fighter SecondFighter { get; private set; }
+
+        public Arena(List<Fighter> fighters)
         {
-            barbarian.Rage();
-            barbarian.TakeDamage(paladin.Damage);
-            Console.WriteLine($"{paladin.Name} нанёс {paladin.Damage} урона {barbarian.Name}!");
-            paladin.CastDivineShield();
-            paladin.TakeDamage(barbarian.Damage);
-            Console.WriteLine($"{barbarian.Name} нанёс {barbarian.Damage} урона {paladin.Name}!");
+            _fighters = fighters;
+        }
+        public void GoFight()
+        {
+            int damageGap = 5;
+            int actualDamageOfSecondFighter = random.Next(SecondFighter.Damage - damageGap, damageGap + SecondFighter.Damage);
+            int actualDamageOfFirstFighter = random.Next(FirstFighter.Damage - damageGap, damageGap + FirstFighter.Damage);
+
+            FirstFighter.TakeDamage(actualDamageOfSecondFighter);
+            Console.WriteLine($"{SecondFighter.Name} нанёс {actualDamageOfSecondFighter} урона {FirstFighter.Name}!");
+            SecondFighter.TakeDamage(actualDamageOfFirstFighter);
+            Console.WriteLine($"{FirstFighter.Name} нанёс {actualDamageOfFirstFighter} урона {SecondFighter.Name}!");
         }
         public void ChooseFighters()
         {
             AddFighters();
-            PrintFighters();
-            string userInput = Console.ReadLine();
+            int fightersToChoose = 2;
 
-            switch(userInput)
+            for (int fightersCount = 0; fightersCount < fightersToChoose; fightersCount++)
             {
-                case "1":
-                    break;
-            }
+                Console.Clear();
+                PrintFighters();
+                Console.WriteLine("Введите номер выбранного вами персонажа: ");
+                string userInput = Console.ReadLine();
 
+                if (Int32.TryParse(userInput, out int result) && result > 0 && result <= _fighters.Count)
+                {
+                    int fighterIndex = result - 1;
+
+                    switch (userInput)
+                    {
+                        case "1":
+                            PickChosenFighter(fighterIndex, fightersCount);
+                            break;
+                        case "2":
+                            PickChosenFighter(fighterIndex, fightersCount);
+                            break;
+                        case "3":
+                            PickChosenFighter(fighterIndex, fightersCount);
+                            break;
+                        case "4":
+                            PickChosenFighter(fighterIndex, fightersCount);
+                            break;
+                        case "5":
+                            PickChosenFighter(fighterIndex, fightersCount);
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Неправильный ввод данных...");
+                    Console.ReadKey();
+                }
+            }
+        }
+        public void PickChosenFighter(int fighterIndex, int fightersCount)
+        {
+            if (fightersCount == 0)
+            {
+                FirstFighter = _fighters[fighterIndex];
+                _fighters.RemoveAt(fighterIndex);
+
+            }
+            else
+            {
+                SecondFighter = _fighters[fighterIndex];
+                _fighters.RemoveAt(fighterIndex);
+            }
         }
         public void AddFighters()
         {
-            _fighters.Add(new Barbarian(100, 20, "Анатолий", 10, 1.5f));
-            _fighters.Add(new Paladin(100, 15, "Павел", 10));
-            _fighters.Add(new Cleric(100, 12, "Ирма", 10, 15));
-            _fighters.Add(new Mage(100, 15, "Ахтунг", 5, 100));
-            _fighters.Add(new Tank(100, 10, "Николай", 30));
+            _fighters.Add(new Barbarian(100, 20, "Варвар", 10, 1.5f));
+            _fighters.Add(new Paladin(100, 15, "Паладин", 10));
+            _fighters.Add(new Cleric(100, 12, "Жрец", 10, 15));
+            _fighters.Add(new Mage(100, 15, "Маг", 5, 100));
+            _fighters.Add(new Tank(100, 10, "Танк", 30));
         }
         public void PrintFighters()
         {
             for (int i = 0; i < _fighters.Count; i++)
             {
-                Console.WriteLine(i + ") - " + _fighters[i].Name);
+                Console.WriteLine(i+1 + ") - " + _fighters[i].Name);
             }
         }
     }
@@ -76,12 +131,12 @@ namespace Start
             Name = name;
             Armor = armor;
             IsAlive = isAlive;
-    }
+        }
         public void TakeDamage(int damage)
         {
             Health -= damage - Armor;
 
-            if ( Health <= 0 )
+            if (Health <= 0)
             {
                 IsAlive = false;
             }
@@ -91,7 +146,7 @@ namespace Start
     {
         private float _damageModificator;
 
-        public Barbarian (int health, int damage, string name, int armor, float damageModificator) : base(health, damage, name, armor)
+        public Barbarian(int health, int damage, string name, int armor, float damageModificator) : base(health, damage, name, armor)
         {
             _damageModificator = damageModificator;
         }
@@ -104,7 +159,7 @@ namespace Start
     {
         private bool _statusDivineShield;
 
-        public Paladin(int health, int damage, string name, int armor, bool statusDivineShield=false) : base(health, damage, name, armor)
+        public Paladin(int health, int damage, string name, int armor, bool statusDivineShield = false) : base(health, damage, name, armor)
         {
             _statusDivineShield = statusDivineShield;
         }
@@ -119,11 +174,14 @@ namespace Start
             {
                 Health -= damageThroughDivineShield;
                 _statusDivineShield = false;
-
-                if (Health <= 0)
-                {
-                    IsAlive = false;
-                }
+            }
+            else
+            {
+                Health -= damage - Armor;
+            }
+            if (Health <= 0)
+            {
+                IsAlive = false;
             }
         }
     }
@@ -143,7 +201,7 @@ namespace Start
             {
                 Health = maxHP;
             }
-            else 
+            else
             {
                 Health += _healPower;
             }
@@ -165,7 +223,7 @@ namespace Start
             if (_mana >= CostOfFireBall)
             {
                 _mana -= CostOfFireBall;
-                aim.TakeDamage(Damage+fireDamage);
+                aim.TakeDamage(Damage + fireDamage);
             }
         }
     }
@@ -173,11 +231,11 @@ namespace Start
     {
         public Tank(int health, int damage, string name, int armor) : base(health, damage, name, armor)
         {
-            
+
         }
         public void DoubleShields()
         {
-            Armor += Armor; 
+            Armor += Armor;
         }
-    }    
+    }
 }
