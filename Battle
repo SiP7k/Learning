@@ -11,10 +11,7 @@ namespace Start
         public static void Main()
         {
             Arena arena = new Arena(new List<Fighter>());
-
             arena.ChooseFighters();
-            
-
 
             while (arena.FirstFighter.IsAlive && arena.SecondFighter.IsAlive)
             {
@@ -170,6 +167,7 @@ namespace Start
         new public void TakeDamage(int damage)
         {
             int damageThroughDivineShield = 1;
+
             if (_statusDivineShield)
             {
                 Health -= damageThroughDivineShield;
@@ -229,10 +227,7 @@ namespace Start
     }
     class Tank : Fighter
     {
-        public Tank(int health, int damage, string name, int armor) : base(health, damage, name, armor)
-        {
-
-        }
+        public Tank(int health, int damage, string name, int armor) : base(health, damage, name, armor){}
         public void DoubleShields()
         {
             Armor += Armor;
