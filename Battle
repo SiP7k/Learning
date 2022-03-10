@@ -1,0 +1,183 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            Barbarian barbarian = new Barbarian(100, 20, "Анатолий", 10, 1.5f);
+            Paladin paladin = new Paladin(100, 15, "Павел", 10);
+            
+            
+            while (barbarian.IsAlive && paladin.IsAlive)
+            {
+               
+            }
+        }
+    }
+    class Arena
+    {
+        private List<Fighter> _fighters = new List<Fighter>();
+        public void StartBattle()
+        {
+            barbarian.Rage();
+            barbarian.TakeDamage(paladin.Damage);
+            Console.WriteLine($"{paladin.Name} нанёс {paladin.Damage} урона {barbarian.Name}!");
+            paladin.CastDivineShield();
+            paladin.TakeDamage(barbarian.Damage);
+            Console.WriteLine($"{barbarian.Name} нанёс {barbarian.Damage} урона {paladin.Name}!");
+        }
+        public void ChooseFighters()
+        {
+            AddFighters();
+            PrintFighters();
+            string userInput = Console.ReadLine();
+
+            switch(userInput)
+            {
+                case "1":
+                    break;
+            }
+
+        }
+        public void AddFighters()
+        {
+            _fighters.Add(new Barbarian(100, 20, "Анатолий", 10, 1.5f));
+            _fighters.Add(new Paladin(100, 15, "Павел", 10));
+            _fighters.Add(new Cleric(100, 12, "Ирма", 10, 15));
+            _fighters.Add(new Mage(100, 15, "Ахтунг", 5, 100));
+            _fighters.Add(new Tank(100, 10, "Николай", 30));
+        }
+        public void PrintFighters()
+        {
+            for (int i = 0; i < _fighters.Count; i++)
+            {
+                Console.WriteLine(i + ") - " + _fighters[i].Name);
+            }
+        }
+    }
+    abstract class Fighter
+    {
+        protected int Health;
+        public int Damage { get; protected set; }
+        public string Name { get; protected set; }
+        protected int Armor;
+        public bool IsAlive { get; protected set; }
+
+        public Fighter(int health, int damage, string name, int armor, bool isAlive = true)
+        {
+            Health = health;
+            Damage = damage;
+            Name = name;
+            Armor = armor;
+            IsAlive = isAlive;
+    }
+        public void TakeDamage(int damage)
+        {
+            Health -= damage - Armor;
+
+            if ( Health <= 0 )
+            {
+                IsAlive = false;
+            }
+        }
+    }
+    class Barbarian : Fighter
+    {
+        private float _damageModificator;
+
+        public Barbarian (int health, int damage, string name, int armor, float damageModificator) : base(health, damage, name, armor)
+        {
+            _damageModificator = damageModificator;
+        }
+        public void Rage()
+        {
+            Damage = (int)(Damage * _damageModificator);
+        }
+    }
+    class Paladin : Fighter
+    {
+        private bool _statusDivineShield;
+
+        public Paladin(int health, int damage, string name, int armor, bool statusDivineShield=false) : base(health, damage, name, armor)
+        {
+            _statusDivineShield = statusDivineShield;
+        }
+        public void CastDivineShield()
+        {
+            _statusDivineShield = true;
+        }
+        new public void TakeDamage(int damage)
+        {
+            int damageThroughDivineShield = 1;
+            if (_statusDivineShield)
+            {
+                Health -= damageThroughDivineShield;
+                _statusDivineShield = false;
+
+                if (Health <= 0)
+                {
+                    IsAlive = false;
+                }
+            }
+        }
+    }
+    class Cleric : Fighter
+    {
+        private int _healPower;
+
+        public Cleric(int health, int damage, string name, int armor, int healPower) : base(health, damage, name, armor)
+        {
+            _healPower = healPower;
+        }
+        public void CastHeal()
+        {
+            int maxHP = 100;
+
+            if (Health + _healPower > maxHP)
+            {
+                Health = maxHP;
+            }
+            else 
+            {
+                Health += _healPower;
+            }
+        }
+    }
+    class Mage : Fighter
+    {
+        private int _mana;
+
+        public Mage(int health, int damage, string name, int armor, int mana) : base(health, damage, name, armor)
+        {
+            _mana = mana;
+        }
+        public void CastFireBall(Fighter aim)
+        {
+            int CostOfFireBall = 20;
+            int fireDamage = 20;
+
+            if (_mana >= CostOfFireBall)
+            {
+                _mana -= CostOfFireBall;
+                aim.TakeDamage(Damage+fireDamage);
+            }
+        }
+    }
+    class Tank : Fighter
+    {
+        public Tank(int health, int damage, string name, int armor) : base(health, damage, name, armor)
+        {
+            
+        }
+        public void DoubleShields()
+        {
+            Armor += Armor; 
+        }
+    }    
+}
