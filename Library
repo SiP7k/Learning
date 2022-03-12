@@ -1,0 +1,132 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            Library library = new Library(new List<Book>());
+            bool isWorking = true;
+
+            while (isWorking)
+            {
+                Console.WriteLine("1 - Добавить книгу\n2 - Убрать книгу\n3 - Показать все книги\n4 - Найти книги по любому указанному параметру");
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "1":
+                        library.Add();
+                        break;
+                    case "2":
+                        library.Delete();
+                        break;
+                    case "3":
+                        library.ShowBooks();
+                        break;
+                    case "4":
+                        library.SearchBooks();
+                        break;
+                }
+            }
+        }
+    }
+
+    class Book
+    {
+        public string _name { get; private set; }
+        public string _autor { get; private set; }
+        public int _year { get; private set; }
+
+        public Book(string name, string autor, int year)
+        {
+            _name = name;
+            _autor = autor;
+            _year = year;
+        }
+    }
+
+    class Library
+    {
+        private List<Book> _books;
+
+        public Library(List<Book> books)
+        {
+            _books = books;
+        }
+        
+        public void Add()
+        {
+            Console.Clear();
+            Console.WriteLine("Введите название новой книги...");
+            string name = Console.ReadLine();
+            Console.WriteLine("Введите автора новой книги...");
+            string autor = Console.ReadLine();
+            Console.WriteLine("Введите год выпуска новой книги...");
+
+            if (Int32.TryParse(Console.ReadLine(), out int year))
+            {
+                _books.Add(new Book(name, autor, year));
+            }
+            else
+            {
+                Console.WriteLine("Неправильный ввод года выпуска! Попробуйте снова...");
+            }
+        }
+        
+        public void Delete()
+        {
+            Console.Clear();
+            ShowBooks();
+            Console.WriteLine("Введите номер книги, которую вы хотите удалить: ");
+            string userInput = Console.ReadLine();
+
+            if (Int32.TryParse(userInput, out int result))
+            {
+                int indexOfBook = result - 1;
+                _books.RemoveAt(indexOfBook);
+            }
+            else
+            {
+                Console.WriteLine("Неправильный ввод! Попробуйте снова...");
+            }
+        }
+
+        public void ShowBooks()
+        {
+            Console.Clear();
+
+            for (int i = 0; i < _books.Count; i++)
+            {
+                int numberOfBook = i + 1;
+                Console.WriteLine($"{numberOfBook}) - {_books[i]._name}  - {_books[i]._autor} - {_books[i]._year}");
+            }
+            if (_books.Count == 0)
+            {
+                Console.WriteLine("Библиотека пока что пуста, попробуйте добавить в неё книгу!");
+            }
+        }
+
+        public void SearchBooks()
+        {
+            Console.WriteLine("Введите параметр, по которому вы хотите найти книги: ");
+            string userInput = Console.ReadLine();
+
+            for (int i = 0; i < _books.Count; i++)
+            {
+                Int32.TryParse(userInput, out int year);
+                int numberOfBook = i + 1;
+
+                if (userInput == _books[i]._autor || userInput == _books[i]._name || year == _books[i]._year)
+                {
+                    Console.WriteLine($"{numberOfBook}) - {_books[i]._name}  - {_books[i]._autor} - {_books[i]._year}");
+                }
+            }
+        }
+    }
+}
