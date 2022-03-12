@@ -16,44 +16,58 @@ namespace Start
             Console.WriteLine("Введите <<1>> для получения карты из колоды. Нажмите <<2>> для передачи хода");
             string userInput = Console.ReadLine();
 
-            while (userInput!= "2" || deck._cards.Count > 0)
+            while (userInput != "2" || deck.GetCopyOfCards().Length > 0)
             {
                 player.DrawCard(deck);
             }
         }
     }
+
     class Card
     {
-        public int _numberOnCard { get; private set; }
+        public int NumberOnCard { get; private set; }
 
         public Card(int numberOnCard)
         {
-            _numberOnCard = numberOnCard;
+            NumberOnCard = numberOnCard;
         }
     }
+
     class Deck
     {
         private Random _random = new Random();
         private int _maxCards;
-        public List<Card> _cards { get; private set; }
+        private List<Card> _cards;
 
         public Deck(List<Card> cards, int maxCards)
         {
             _cards = cards;
             _maxCards = maxCards;
         }
+
         public void AddCards()
         {
             for (int i = 0; i < _maxCards; i++)
             {
-                _cards.Add(new Card(_random.Next(0, 11)));
+                int minNumberOnCard = 0;
+                int maxNumberOnCard = 10;
+                _cards.Add(new Card(_random.Next(minNumberOnCard, maxNumberOnCard+1)));
             }
         }
+
         public void DeleteCard(int indexOfCard)
         {
             _cards.RemoveAt(indexOfCard);
         }
+
+        public Card[] GetCopyOfCards()
+        {
+            Card[] tempCards = new Card[_cards.Count];
+            _cards.CopyTo(tempCards);
+            return tempCards;
+        }
     }
+    
     class Player
     {
         private List<Card> _cards;
@@ -62,17 +76,19 @@ namespace Start
         {
             _cards = cards;
         }
+
         public void DrawCard(Deck deck)
         {
-            Console.WriteLine($"Перед вами раскладывают {deck._cards.Count} карт. Какую по счёту слева вы выберете?");
+            Card[] cards = deck.GetCopyOfCards();
+            Console.WriteLine($"Перед вами раскладывают {cards.Length} карт. Какую по счёту слева вы выберете?");
             string userInput = Console.ReadLine();
 
-            if (Int32.TryParse(userInput, out int result) && result > 0 && result <= deck._cards.Count)
+            if (Int32.TryParse(userInput, out int result) && result > 0 && result <= cards.Length)
             {
                 int indexOfCard = result - 1;
-                _cards.Add(deck._cards[indexOfCard]);
                 deck.DeleteCard(indexOfCard);
-                Console.WriteLine($"Вы вытягиваете карту с номером {_cards.Last()._numberOnCard}. В колоде осталось {deck._cards.Count} карт.");
+                _cards.Add(cards[indexOfCard]);
+                Console.WriteLine($"Вы вытягиваете карту с номером {cards.Last().NumberOnCard}. В колоде осталось {cards.Length-1} карт.");
             }
             else
             {
