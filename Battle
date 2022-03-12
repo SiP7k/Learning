@@ -21,7 +21,7 @@ namespace Start
     }
     class Arena
     {
-        Random random = new Random();
+        private Random random = new Random();
         private List<Fighter> _fighters = new List<Fighter>();
         public Fighter FirstFighter { get; private set; }
         public Fighter SecondFighter { get; private set; }
@@ -35,11 +35,30 @@ namespace Start
             int damageGap = 5;
             int actualDamageOfSecondFighter = random.Next(SecondFighter.Damage - damageGap, damageGap + SecondFighter.Damage);
             int actualDamageOfFirstFighter = random.Next(FirstFighter.Damage - damageGap, damageGap + FirstFighter.Damage);
-
+            UseSpells();
             FirstFighter.TakeDamage(actualDamageOfSecondFighter);
-            Console.WriteLine($"{SecondFighter.Name} нанёс {actualDamageOfSecondFighter} урона {FirstFighter.Name}!");
+            Console.WriteLine($"{SecondFighter.Name} нанёс {actualDamageOfSecondFighter} урона {FirstFighter.Name}! У {FirstFighter.Name} осталось {FirstFighter.Health} HP!");
             SecondFighter.TakeDamage(actualDamageOfFirstFighter);
-            Console.WriteLine($"{FirstFighter.Name} нанёс {actualDamageOfFirstFighter} урона {SecondFighter.Name}!");
+            Console.WriteLine($"{FirstFighter.Name} нанёс {actualDamageOfFirstFighter} урона {SecondFighter.Name}! У {SecondFighter.Name} осталось {SecondFighter.Health} HP!");
+        }
+        private void UseSpells()
+        {
+            if (SecondFighter.GetType() == typeof(Mage))
+            {
+                SecondFighter.UseSpell(FirstFighter);
+            }
+            else
+            {
+                SecondFighter.UseSpell();
+            }
+            if (FirstFighter.GetType() == typeof(Mage))
+            {
+                FirstFighter.UseSpell(SecondFighter);
+            }
+            else
+            {
+                FirstFighter.UseSpell();
+            }
         }
         public void ChooseFighters()
         {
@@ -83,7 +102,7 @@ namespace Start
                 }
             }
         }
-        public void PickChosenFighter(int fighterIndex, int fightersCount)
+        private void PickChosenFighter(int fighterIndex, int fightersCount)
         {
             if (fightersCount == 0)
             {
@@ -97,7 +116,7 @@ namespace Start
                 _fighters.RemoveAt(fighterIndex);
             }
         }
-        public void AddFighters()
+        private void AddFighters()
         {
             _fighters.Add(new Barbarian(100, 20, "Варвар", 10, 1.5f));
             _fighters.Add(new Paladin(100, 15, "Паладин", 10));
@@ -105,7 +124,7 @@ namespace Start
             _fighters.Add(new Mage(100, 15, "Маг", 5, 100));
             _fighters.Add(new Tank(100, 10, "Танк", 30));
         }
-        public void PrintFighters()
+        private void PrintFighters()
         {
             for (int i = 0; i < _fighters.Count; i++)
             {
@@ -115,18 +134,18 @@ namespace Start
     }
     abstract class Fighter
     {
-        protected int Health;
+        protected int Armor;
+        public int Health { get; protected set; }
         public int Damage { get; protected set; }
         public string Name { get; protected set; }
-        protected int Armor;
         public bool IsAlive { get; protected set; }
 
         public Fighter(int health, int damage, string name, int armor, bool isAlive = true)
         {
+            Armor = armor;
             Health = health;
             Damage = damage;
             Name = name;
-            Armor = armor;
             IsAlive = isAlive;
         }
         public void TakeDamage(int damage)
@@ -136,7 +155,14 @@ namespace Start
             if (Health <= 0)
             {
                 IsAlive = false;
+                Console.WriteLine($"{Name} is dead!");
             }
+        }
+        virtual public void UseSpell()
+        {
+        }
+        virtual public void UseSpell(Fighter aim)
+        {
         }
     }
     class Barbarian : Fighter
@@ -147,9 +173,14 @@ namespace Start
         {
             _damageModificator = damageModificator;
         }
-        public void Rage()
+        public override void UseSpell()
+        {
+            Rage();
+        }
+        private void Rage()
         {
             Damage = (int)(Damage * _damageModificator);
+            Console.WriteLine($"Варвар впал в ярость, его урон повышен в {_damageModificator} раза");
         }
     }
     class Paladin : Fighter
@@ -159,10 +190,6 @@ namespace Start
         public Paladin(int health, int damage, string name, int armor, bool statusDivineShield = false) : base(health, damage, name, armor)
         {
             _statusDivineShield = statusDivineShield;
-        }
-        public void CastDivineShield()
-        {
-            _statusDivineShield = true;
         }
         new public void TakeDamage(int damage)
         {
@@ -182,6 +209,15 @@ namespace Start
                 IsAlive = false;
             }
         }
+        public override void UseSpell()
+        {
+            CastDivineShield();
+            Console.WriteLine($"Паладин опять укрывается за божественным щитом, ДА СКОЛЬКО МОЖНО?!");
+        }
+        private void CastDivineShield()
+        {
+            _statusDivineShield = true;
+        }
     }
     class Cleric : Fighter
     {
@@ -191,7 +227,11 @@ namespace Start
         {
             _healPower = healPower;
         }
-        public void CastHeal()
+        public override void UseSpell()
+        {
+            CastHeal();
+        }
+        private void CastHeal()
         {
             int maxHP = 100;
 
@@ -203,6 +243,7 @@ namespace Start
             {
                 Health += _healPower;
             }
+            Console.WriteLine($"Жрец восстановил себе {_healPower} HP. Теперь у него {Health} HP");
         }
     }
     class Mage : Fighter
@@ -213,22 +254,39 @@ namespace Start
         {
             _mana = mana;
         }
-        public void CastFireBall(Fighter aim)
+        public override void UseSpell(Fighter aim)
+        {
+            CastFireBall(aim);
+        }
+        private void CastFireBall(Fighter aim)
         {
             int CostOfFireBall = 20;
             int fireDamage = 20;
+            int manaToRestore = 5;
+            int fireBallDamage = Damage + fireDamage;
 
             if (_mana >= CostOfFireBall)
             {
                 _mana -= CostOfFireBall;
-                aim.TakeDamage(Damage + fireDamage);
+                aim.TakeDamage(fireBallDamage);
+                Console.WriteLine($"Маг кастует в противника Фаерболл, который наносит {fireBallDamage} урона. Теперь у противника {aim.Health} HP");
             }
+            else
+            {
+                Console.WriteLine("Недостаточно маны для фаерболла!");
+            }
+            _mana += manaToRestore;
         }
     }
     class Tank : Fighter
     {
         public Tank(int health, int damage, string name, int armor) : base(health, damage, name, armor){}
-        public void DoubleShields()
+        public override void UseSpell()
+        {
+            DoubleShields();
+            Console.WriteLine($"Танк стал непробиваемее ещё на {Armor}. Это совершенно нечестно и несбалансираванно!");
+        }
+        private void DoubleShields()
         {
             Armor += Armor;
         }
