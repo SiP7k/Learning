@@ -1,0 +1,183 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            int numberOfSoldiersArmy1 = 30;
+            int numberOfSoldiersArmy2 = 15;
+            int numberOfTanksArmy1 = 10;
+            int numberOfTanksArmy2 = 15;
+            int numberOfSupportsArmy1 = 15;
+            int numberOfSupportsArmy2 = 10;
+
+            Squad army1 = new Squad(new List<Soldier>(), "Спецназ");
+            Squad army2 = new Squad(new List<Soldier>(), "Террористы");
+
+            army1.AddFighters(numberOfSoldiersArmy1,numberOfTanksArmy1,numberOfSupportsArmy1);
+            army2.AddFighters(numberOfSoldiersArmy2, numberOfTanksArmy2, numberOfSupportsArmy2);
+
+            while (army1.Health > 0 && army2.Health > 0)
+            {
+                AttackArmy(army1, army2);
+                AttackArmy(army2, army1);
+            }
+        }
+        private static void AttackArmy(Squad army1, Squad army2)
+        {
+            Console.WriteLine($"\nХод {army1.Name}:\n");
+            army2.TakeDamage(army1.Damage);
+            int sumHeal = army1.UseHeal(army1);
+            int sumTankDamage = army1.UseFire(army2);
+            Console.WriteLine($"Взвод восстанавливает {sumHeal} HP!");
+            Console.WriteLine($"Танки взвода наносят {sumTankDamage} урона!");
+            Console.WriteLine($"{army1.Name} наносят {army1.Damage} урона! У {army2.Name} остаётся {army2.Health} HP");
+        }
+    }
+
+    class Soldier
+    {
+        public int Health { get; protected set; }
+        public int Damage { get; protected set; }
+
+        public Soldier(int damage = 10, int health = 100)
+        {
+            Damage = damage;
+            Health = health;
+        }
+
+        public virtual int UseSpecialAbility(Squad aim)
+        {
+            int defaultNumber = 0;
+            return defaultNumber;
+        }
+    }
+
+    class Tank : Soldier
+    {
+        public Tank(int damage = 100, int health = 300) : base(damage, health) {}
+
+        public override int UseSpecialAbility(Squad aim)
+        {
+            int doubleDamage = Damage * 2;
+            aim.TakeDamage(doubleDamage);
+            return doubleDamage;
+        }
+    }
+
+    class Support : Soldier
+    {
+        private int _healPower;
+
+        public Support(int damage = 5, int health = 70, int healPower = 20) : base(damage, health)
+        {
+            _healPower = healPower;
+        }
+
+        public override int UseSpecialAbility(Squad aim)
+        {
+            aim.Heal(_healPower);
+            return _healPower;
+        }
+    }
+
+    class Squad
+    {
+        private List<Soldier> _fighters;
+        public string Name { get; private set; }
+        public int Damage { get; private set; }
+        public int Health { get; private set; }
+
+        public Squad(List<Soldier> fighters, string name, int damage = 0, int health = 0)
+        {
+            _fighters = fighters;
+            Name = name;
+            Damage = damage;
+            Health = health;
+        }
+
+        public void AddFighters(int numberOfSoldiers, int numberOfTanks, int numberOfSupports)
+        {
+            AddSoldiers(numberOfSoldiers);
+            AddTanks(numberOfTanks);
+            AddSupports(numberOfSupports);
+        }
+
+        public void TakeDamage(int damage)
+        {
+            Health -= damage;
+        }
+
+        public void Heal(int healPower)
+        {
+            Health += healPower;
+        }
+
+        public int UseHeal(Squad army)
+        {
+            int sumOfHeal = 0;
+
+            for (int i = 0; i < _fighters.Count; i++)
+            {
+                if (_fighters[i].GetType() == typeof(Support))
+                {
+                    sumOfHeal += _fighters[i].UseSpecialAbility(army);
+                }
+            }
+            return sumOfHeal;
+        }
+
+        public int UseFire(Squad army)
+        {
+            int sumOfDamage = 0;
+
+            for (int i = 0; i < _fighters.Count; i++)
+            {
+                if (_fighters[i].GetType() == typeof(Tank))
+                {
+                    sumOfDamage += _fighters[i].UseSpecialAbility(army);
+                }
+            }
+            return sumOfDamage;
+        }
+
+        private void AddTanks(int number)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                _fighters.Add(new Tank());
+                SumDamageAndHealth(i);
+            }
+        }
+
+        private void AddSoldiers(int number)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                _fighters.Add(new Soldier());
+                SumDamageAndHealth(i);
+            }
+        }
+
+        private void AddSupports(int number)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                _fighters.Add(new Support());
+                SumDamageAndHealth(i);
+            }
+        }
+
+        private void SumDamageAndHealth(int index)
+        {
+            Health += _fighters[index].Health;
+            Damage += _fighters[index].Damage;
+        }
+    }
+}
