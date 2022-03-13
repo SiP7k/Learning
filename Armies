@@ -65,7 +65,8 @@ namespace Start
 
         public override int UseSpecialAbility(Squad aim)
         {
-            int doubleDamage = Damage * 2;
+            int damageModificator = 2;
+            int doubleDamage = Damage * damageModificator;
             aim.TakeDamage(doubleDamage);
             return doubleDamage;
         }
@@ -90,6 +91,7 @@ namespace Start
     class Squad
     {
         private List<Soldier> _fighters;
+        
         public string Name { get; private set; }
         public int Damage { get; private set; }
         public int Health { get; private set; }
