@@ -38,9 +38,11 @@ namespace Start
 
         public void ServeClients()
         {
-            for (int i = 0; i < _clients.Count; i++)
+            while (_clients.Count > 0)
             {
-                Console.WriteLine("Новый клиент подходит к касе!");
+                Console.WriteLine("Подзовите следующего клиента, нажав любую кнопку...");
+                Console.ReadKey();
+                Console.WriteLine("\nНовый клиент подходит к касе!\n");
                 _clients.Peek().FillBasket();
                 Client tempClient = _clients.Dequeue();
 
@@ -56,7 +58,7 @@ namespace Start
 
     class Client
     {
-        private Random _random = new Random((int)DateTime.Now.Ticks);
+        private static Random _random = new Random();
         private List<Product> _products;
         private List<Product> _productsToBuy;
         public int Money { get; private set; }
@@ -130,7 +132,7 @@ namespace Start
     {
         public int Price { get; private set; }
         public string Name { get; private set; }
-        
+
         public Product(int price, string name)
         {
             Price = price;
