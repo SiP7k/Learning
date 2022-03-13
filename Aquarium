@@ -1,0 +1,140 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            Aquarium aquarium = new Aquarium();
+            bool isWorking = true;
+
+            while (isWorking)
+            {
+                Console.Clear();
+                aquarium.ShowAllFish();
+                Console.WriteLine("1 - Добавить рыбов\n2 - Удалить рыбова\n3 - Подождать год\n4 - Выход");
+                string userInput = Console.ReadLine();
+
+                switch(userInput)
+                {
+                    case "1":
+                        aquarium.AddFishes();
+                        break;
+                    case "2":
+                        aquarium.DeleteFishes();
+                        break;
+                    case "3":
+                        break;
+                    case "4":
+                        isWorking = false;
+                        break;
+                }
+                aquarium.SkipYear();
+            }
+        }
+    }
+
+    class Fish
+    {
+        public int Age { get; private set; }
+        public int MaxAge { get; private set; }
+        public bool IsAlive { get; private set; }
+
+        public Fish(int age = 0, int maxAge = 10, bool isAlive = true)
+        {
+            Age = age;
+            MaxAge = maxAge;
+            IsAlive = isAlive;
+        }
+        public void AddAge()
+        {
+            int year = 1;
+            Age += year;
+        }
+    }
+
+    class Aquarium
+    {
+        private List<Fish> _fishes;
+        
+        public Aquarium()
+        {
+            _fishes = new List<Fish>();
+            AddFishes();
+        }
+
+        public void AddFishes()
+        {
+            Console.Clear();
+            Console.WriteLine("Введите количество рыбов, которое вы хотите запустить в аквариум:");
+            string userInput = Console.ReadLine();
+
+            if (Int32.TryParse(userInput, out int result) && result > 0)
+            {
+                for (int i = 0; i < result ; i++)
+                {
+                    _fishes.Add(new Fish());
+                }
+                Console.WriteLine($"Вы запустили {result} рыбов!");
+            }
+            else
+            {
+                Console.WriteLine("Неправильный ввод данных...");
+            }
+        }
+
+        public void DeleteFishes()
+        {
+            Console.Clear();
+            Console.WriteLine("Введите номер рыбова, которого вы хотите достать из аквариума:");
+            string userInput = Console.ReadLine();
+
+            if (Int32.TryParse(userInput, out int result) && result > 0 && result <= _fishes.Count)
+            {
+                int indexToRemove = result - 1;
+                 _fishes.RemoveAt(indexToRemove);
+                Console.WriteLine($"Вы достали {result}ого рыбова!");
+            }
+            else
+            {
+                Console.WriteLine("Неправильный ввод данных...");
+                Console.ReadKey();
+            }
+        }
+
+        public void ShowAllFish()
+        {
+            int infoWindowPositionX = 0;
+            int infoWindowPositionY = 10;
+            Console.SetCursorPosition(infoWindowPositionX, infoWindowPositionY);
+
+            for (int i = 0; i < _fishes.Count; i++)
+            {
+                int number = i + 1;
+                Console.WriteLine($"{number}) - {_fishes[i].Age}");
+            }
+            Console.SetCursorPosition(0, 0);
+        }
+
+        public void SkipYear()
+        {
+            for (int i = 0; i < _fishes.Count; i++)
+            {
+                if (_fishes[i].Age >= _fishes[i].MaxAge)
+                {
+                    _fishes.RemoveAt(i);
+                    i--;
+                }
+                else
+                {
+                    _fishes[i].AddAge();
+                }
+            }
+        }
+    }
+}
