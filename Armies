@@ -17,8 +17,8 @@ namespace Start
             int numberOfSupportsArmy1 = 15;
             int numberOfSupportsArmy2 = 10;
 
-            Squad army1 = new Squad(new List<Soldier>(), "Спецназ");
-            Squad army2 = new Squad(new List<Soldier>(), "Террористы");
+            Squad army1 = new Squad("Спецназ");
+            Squad army2 = new Squad("Террористы");
 
             army1.AddFighters(numberOfSoldiersArmy1,numberOfTanksArmy1,numberOfSupportsArmy1);
             army2.AddFighters(numberOfSoldiersArmy2, numberOfTanksArmy2, numberOfSupportsArmy2);
@@ -94,9 +94,9 @@ namespace Start
         public int Damage { get; private set; }
         public int Health { get; private set; }
 
-        public Squad(List<Soldier> fighters, string name, int damage = 0, int health = 0)
+        public Squad(string name, int damage = 0, int health = 0)
         {
-            _fighters = fighters;
+            _fighters = new List<Soldier>();
             Name = name;
             Damage = damage;
             Health = health;
