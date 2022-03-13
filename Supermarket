@@ -1,0 +1,140 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            Supermarket ashan = new Supermarket(new Queue<Client>(), 10);
+            ashan.AddClients();
+            ashan.ServeClients();
+        }
+    }
+
+    class Supermarket
+    {
+        private Random _random = new Random();
+        private Queue<Client> _clients;
+        private int _clientsNumber;
+
+        public Supermarket(Queue<Client> clients, int clientsNumber)
+        {
+            _clients = clients;
+            _clientsNumber = clientsNumber;
+        }
+
+        public void AddClients()
+        {
+            for (int i = 0; i < _clientsNumber; i++)
+            {
+                _clients.Enqueue(new Client(_random.Next(100, 1000), new List<Product>(), new List<Product>()));
+            }
+        }
+
+        public void ServeClients()
+        {
+            for (int i = 0; i < _clients.Count; i++)
+            {
+                Console.WriteLine("Новый клиент подходит к касе!");
+                _clients.Peek().FillBasket();
+                Client tempClient = _clients.Dequeue();
+
+                while (tempClient.PriceOfBasket > tempClient.Money)
+                {
+                    tempClient.DeleteRandomProduct();
+                }
+                tempClient.BuyProducts();
+                tempClient.ShowBasket();
+            }
+        }
+    }
+
+    class Client
+    {
+        private Random _random = new Random((int)DateTime.Now.Ticks);
+        private List<Product> _products;
+        private List<Product> _productsToBuy;
+        public int Money { get; private set; }
+        public int PriceOfBasket { get; private set; }
+
+        public Client(int money, List<Product> products, List<Product> productsToBuy, int priceOfBasket = 0)
+        {
+            _products = products;
+            _productsToBuy = productsToBuy;
+            Money = money;
+            PriceOfBasket = priceOfBasket;
+        }
+
+        public void FillBasket()
+        {
+            AddProducts();
+            int minAmountProductsToBuy = 1;
+            int maxAmountProductsToBuy = 6;
+            int amountProducts = _random.Next(minAmountProductsToBuy, maxAmountProductsToBuy + 1);
+
+            for (int j = 0; j < amountProducts; j++)
+            {
+                int indexOfRandomProduct = _random.Next(0, _productsToBuy.Count);
+                _products.Add(_productsToBuy[indexOfRandomProduct]);
+                PriceOfBasket += _productsToBuy[indexOfRandomProduct].Price;
+            }
+        }
+        public void AddProducts()
+        {
+            _productsToBuy.Add(new Product(50, "Колбаса"));
+            _productsToBuy.Add(new Product(30, "Сыр"));
+            _productsToBuy.Add(new Product(100, "Туалетка"));
+            _productsToBuy.Add(new Product(150, "Чипсы Lays"));
+            _productsToBuy.Add(new Product(70, "Пиво"));
+            _productsToBuy.Add(new Product(10, "Хлеб"));
+        }
+        
+        public void BuyProducts()
+        {
+            Money -= PriceOfBasket;
+            Console.WriteLine($"Клиент заплатил {PriceOfBasket}$ за список продуктов:");
+        }
+
+        public void DeleteRandomProduct()
+        {
+            int indexOfRandomProduct = _random.Next(0, _products.Count);
+            Console.WriteLine($"{_products[indexOfRandomProduct].Name} был удалён из корзины!");
+
+            if (_products.Count == 0)
+            {
+                Console.WriteLine("Клиент-бомж, вы выкидываете его из магазина!");
+            }
+            else
+            {
+                PriceOfBasket -= _products[indexOfRandomProduct].Price;
+                _products.RemoveAt(indexOfRandomProduct);
+            }
+        }
+        
+        public void ShowBasket()
+        {
+            for (int i = 0; i < _products.Count; i++)
+            {
+                int numberOfProduct = i + 1;
+                Console.WriteLine($"{numberOfProduct}) - {_products[i].Name} - {_products[i].Price}");
+            }
+        }
+    }
+
+    class Product
+    {
+        public int Price { get; private set; }
+        public string Name { get; private set; }
+        
+        public Product(int price, string name)
+        {
+            Price = price;
+            Name = name;
+        }
+    }
+}
