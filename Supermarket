@@ -86,6 +86,7 @@ namespace Start
                 PriceOfBasket += _productsToBuy[indexOfRandomProduct].Price;
             }
         }
+        
         public void AddProducts()
         {
             _productsToBuy.Add(new Product(50, "Колбаса"));
