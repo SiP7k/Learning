@@ -10,8 +10,7 @@ namespace Start
     {
         public static void Main()
         {
-            Supermarket ashan = new Supermarket(new Queue<Client>(), 10);
-            ashan.AddClients();
+            Supermarket ashan = new Supermarket(10);
             ashan.ServeClients();
         }
     }
@@ -22,18 +21,11 @@ namespace Start
         private Queue<Client> _clients;
         private int _clientsNumber;
 
-        public Supermarket(Queue<Client> clients, int clientsNumber)
+        public Supermarket(int clientsNumber)
         {
-            _clients = clients;
+            _clients = new Queue<Client>();
             _clientsNumber = clientsNumber;
-        }
-
-        public void AddClients()
-        {
-            for (int i = 0; i < _clientsNumber; i++)
-            {
-                _clients.Enqueue(new Client(_random.Next(100, 1000), new List<Product>(), new List<Product>()));
-            }
+            AddClients();
         }
 
         public void ServeClients()
@@ -43,7 +35,6 @@ namespace Start
                 Console.WriteLine("Подзовите следующего клиента, нажав любую кнопку...");
                 Console.ReadKey();
                 Console.WriteLine("\nНовый клиент подходит к касе!\n");
-                _clients.Peek().FillBasket();
                 Client tempClient = _clients.Dequeue();
 
                 while (tempClient.PriceOfBasket > tempClient.Money)
@@ -52,6 +43,17 @@ namespace Start
                 }
                 tempClient.BuyProducts();
                 tempClient.ShowBasket();
+            }
+        }
+
+        private void AddClients()
+        {
+            int maxMoney = 1000;
+            int minMoney = 100;
+
+            for (int i = 0; i < _clientsNumber; i++)
+            {
+                _clients.Enqueue(new Client(_random.Next(minMoney, maxMoney), new List<Product>(), new List<Product>()));
             }
         }
     }
@@ -70,23 +72,9 @@ namespace Start
             _productsToBuy = productsToBuy;
             Money = money;
             PriceOfBasket = priceOfBasket;
+            FillBasket();
         }
 
-        public void FillBasket()
-        {
-            AddProducts();
-            int minAmountProductsToBuy = 1;
-            int maxAmountProductsToBuy = 6;
-            int amountProducts = _random.Next(minAmountProductsToBuy, maxAmountProductsToBuy + 1);
-
-            for (int j = 0; j < amountProducts; j++)
-            {
-                int indexOfRandomProduct = _random.Next(0, _productsToBuy.Count);
-                _products.Add(_productsToBuy[indexOfRandomProduct]);
-                PriceOfBasket += _productsToBuy[indexOfRandomProduct].Price;
-            }
-        }
-        
         public void BuyProducts()
         {
             Money -= PriceOfBasket;
@@ -108,13 +96,28 @@ namespace Start
                 _products.RemoveAt(indexOfRandomProduct);
             }
         }
-        
+
         public void ShowBasket()
         {
             for (int i = 0; i < _products.Count; i++)
             {
                 int numberOfProduct = i + 1;
                 Console.WriteLine($"{numberOfProduct}) - {_products[i].Name} - {_products[i].Price}");
+            }
+        }
+
+        private void FillBasket()
+        {
+            AddProducts();
+            int minAmountProductsToBuy = 1;
+            int maxAmountProductsToBuy = 6;
+            int amountProducts = _random.Next(minAmountProductsToBuy, maxAmountProductsToBuy + 1);
+
+            for (int j = 0; j < amountProducts; j++)
+            {
+                int indexOfRandomProduct = _random.Next(0, _productsToBuy.Count);
+                _products.Add(_productsToBuy[indexOfRandomProduct]);
+                PriceOfBasket += _productsToBuy[indexOfRandomProduct].Price;
             }
         }
 
