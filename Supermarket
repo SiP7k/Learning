@@ -87,16 +87,6 @@ namespace Start
             }
         }
         
-        public void AddProducts()
-        {
-            _productsToBuy.Add(new Product(50, "Колбаса"));
-            _productsToBuy.Add(new Product(30, "Сыр"));
-            _productsToBuy.Add(new Product(100, "Туалетка"));
-            _productsToBuy.Add(new Product(150, "Чипсы Lays"));
-            _productsToBuy.Add(new Product(70, "Пиво"));
-            _productsToBuy.Add(new Product(10, "Хлеб"));
-        }
-        
         public void BuyProducts()
         {
             Money -= PriceOfBasket;
@@ -126,6 +116,16 @@ namespace Start
                 int numberOfProduct = i + 1;
                 Console.WriteLine($"{numberOfProduct}) - {_products[i].Name} - {_products[i].Price}");
             }
+        }
+
+        private void AddProducts()
+        {
+            _productsToBuy.Add(new Product(50, "Колбаса"));
+            _productsToBuy.Add(new Product(30, "Сыр"));
+            _productsToBuy.Add(new Product(100, "Туалетка"));
+            _productsToBuy.Add(new Product(150, "Чипсы Lays"));
+            _productsToBuy.Add(new Product(70, "Пиво"));
+            _productsToBuy.Add(new Product(10, "Хлеб"));
         }
     }
 
