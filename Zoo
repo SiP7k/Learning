@@ -10,37 +10,96 @@ namespace Start
     {
         public static void Main()
         {
+            Zoo zoo = new Zoo();
             bool isWorking = true;
-            Aviary aviaryOfWolfs = new Aviary();
-            Aviary aviaryOfSheeps = new Aviary();
-            Aviary aviaryOfHorses = new Aviary();
-            Aviary aviaryOfDucks = new Aviary();
-            aviaryOfWolfs.FillWolfs();
-            aviaryOfSheeps.FillSheeps();
-            aviaryOfHorses.FillHorses();
-            aviaryOfDucks.FillDucks();
 
             while (isWorking)
             {
-                Console.WriteLine($"1 - волки\n2 - овцы\n3 - лошади\n4 - утки");
-                string userInput = Console.ReadLine();
-
-                switch (userInput)
-                {
-                    case "1":
-                        aviaryOfWolfs.ShowInfo();
-                        break;
-                    case "2":
-                        aviaryOfSheeps.ShowInfo();
-                        break;
-                    case "3":
-                        aviaryOfHorses.ShowInfo();
-                        break;
-                    case "4":
-                        aviaryOfDucks.ShowInfo();
-                        break;
-                }
+                zoo.ShowInfo();
             }
+        }
+    }
+
+    class Zoo
+    {
+        private List<Aviary> _aviaries;
+
+        public Zoo()
+        {
+            _aviaries = new List<Aviary>();
+            _aviaries.Add(new Aviary());
+            _aviaries.Add(new Aviary());
+            _aviaries.Add(new Aviary());
+            _aviaries.Add(new Aviary());
+
+            Fill();
+        }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"1 - утки\n2 - лошади\n3 - овцы\n4 - волки");
+            string userInput = Console.ReadLine();
+            Console.Clear();
+
+            if (Int32.TryParse(userInput,out int result) && result > 0 && result <= _aviaries.Count)
+            {
+                int indexAviary = result - 1;
+                _aviaries[indexAviary].ShowInfo();
+            }
+            else
+            {
+                Console.WriteLine("Неправильный ввод...");
+            }
+        }
+
+        public void Fill()
+        {
+            FillDucks();
+            FillHorses();
+            FillSheeps();
+            FillWolfs();
+        }
+
+        private void FillDucks()
+        {
+            int indexOfAviary = 0;
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Duck", "male", "Krya"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Duck", "male", "Krya"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Duck", "female", "Krya"));
+        }
+
+        private void FillHorses()
+        {
+            int indexOfAviary = 1;
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Horse", "male", "Frfrfr"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Horse", "female", "Frfrfr"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Horse", "male", "Frfrfr"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Horse", "female", "Frfrfr"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Horse", "female", "Frfrfr"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Horse", "female", "Frfrfr"));
+        }
+
+        private void FillSheeps()
+        {
+            int indexOfAviary = 2;
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Sheep", "male", "Beee"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Sheep", "female", "Beee"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Sheep", "male", "Beee"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Sheep", "female", "Beee"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Sheep", "male", "Beee"));
+
+        }
+
+        private void FillWolfs()
+        {
+            int indexOfAviary = 3;
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Wolf", "female", "Woof"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Wolf", "male", "Woof"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Wolf", "female", "Woof"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Wolf", "male", "Woof"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Wolf", "female", "Woof"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Wolf", "male", "Woof"));
+            _aviaries[indexOfAviary].GetAnimalsList().Add(new Animal("Wolf", "male", "Woof"));
         }
     }
 
@@ -53,42 +112,6 @@ namespace Start
             _animals = new List<Animal>();
         }
 
-        public void FillDucks()
-        {
-            _animals.Add(new Animal("Duck", "male", "Krya"));
-            _animals.Add(new Animal("Duck", "male", "Krya"));
-            _animals.Add(new Animal("Duck", "female", "Krya"));
-        }
-
-        public void FillHorses()
-        {
-            _animals.Add(new Animal("Horse", "female", "Frfrfr"));
-            _animals.Add(new Animal("Horse", "female", "Frfrfr"));
-            _animals.Add(new Animal("Horse", "female", "Frfrfr"));
-            _animals.Add(new Animal("Horse", "male", "Frfrfr"));
-            _animals.Add(new Animal("Horse", "male", "Frfrfr"));
-        }
-
-        public void FillSheeps()
-        {
-            _animals.Add(new Animal("Sheep", "male", "Beee"));
-            _animals.Add(new Animal("Sheep", "female", "Beee"));
-            _animals.Add(new Animal("Sheep", "male", "Beee"));
-            _animals.Add(new Animal("Sheep", "male", "Beee"));
-            _animals.Add(new Animal("Sheep", "female", "Beee"));
-        }
-
-        public void FillWolfs()
-        {
-            _animals.Add(new Animal("Wolf", "female", "Woof"));
-            _animals.Add(new Animal("Wolf", "male", "Woof"));
-            _animals.Add(new Animal("Wolf", "male", "Woof"));
-            _animals.Add(new Animal("Wolf", "female", "Woof"));
-            _animals.Add(new Animal("Wolf", "female", "Woof"));
-            _animals.Add(new Animal("Wolf", "female", "Woof"));
-            _animals.Add(new Animal("Wolf", "female", "Woof"));
-        }
-
         public void ShowInfo()
         {
             Console.WriteLine($"\nОсобей --- {_animals.Count} шт.");
@@ -97,6 +120,11 @@ namespace Start
             {
                 Console.WriteLine($"\n{_animals[i].Name} --- {_animals[i].Sex} --- {_animals[i].Sound}");
             }
+        }
+        
+        public List<Animal> GetAnimalsList()
+        {
+            return _animals;
         }
     }
 
