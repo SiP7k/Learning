@@ -1,0 +1,116 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Test
+    {
+        public static void Main()
+        {
+            bool isWorking = true;
+            Aviary aviaryOfWolfs = new Aviary();
+            Aviary aviaryOfSheeps = new Aviary();
+            Aviary aviaryOfHorses = new Aviary();
+            Aviary aviaryOfDucks = new Aviary();
+            aviaryOfWolfs.FillWolfs();
+            aviaryOfSheeps.FillSheeps();
+            aviaryOfHorses.FillHorses();
+            aviaryOfDucks.FillDucks();
+
+            while (isWorking)
+            {
+                Console.WriteLine($"1 - волки\n2 - овцы\n3 - лошади\n4 - утки");
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "1":
+                        aviaryOfWolfs.ShowInfo();
+                        break;
+                    case "2":
+                        aviaryOfSheeps.ShowInfo();
+                        break;
+                    case "3":
+                        aviaryOfHorses.ShowInfo();
+                        break;
+                    case "4":
+                        aviaryOfDucks.ShowInfo();
+                        break;
+                }
+            }
+        }
+    }
+
+    class Aviary
+    {
+        private List<Animal> _animals;
+
+        public Aviary()
+        {
+            _animals = new List<Animal>();
+        }
+
+        public void FillDucks()
+        {
+            _animals.Add(new Animal("Duck", "male", "Krya"));
+            _animals.Add(new Animal("Duck", "male", "Krya"));
+            _animals.Add(new Animal("Duck", "female", "Krya"));
+        }
+
+        public void FillHorses()
+        {
+            _animals.Add(new Animal("Horse", "female", "Frfrfr"));
+            _animals.Add(new Animal("Horse", "female", "Frfrfr"));
+            _animals.Add(new Animal("Horse", "female", "Frfrfr"));
+            _animals.Add(new Animal("Horse", "male", "Frfrfr"));
+            _animals.Add(new Animal("Horse", "male", "Frfrfr"));
+        }
+
+        public void FillSheeps()
+        {
+            _animals.Add(new Animal("Sheep", "male", "Beee"));
+            _animals.Add(new Animal("Sheep", "female", "Beee"));
+            _animals.Add(new Animal("Sheep", "male", "Beee"));
+            _animals.Add(new Animal("Sheep", "male", "Beee"));
+            _animals.Add(new Animal("Sheep", "female", "Beee"));
+        }
+
+        public void FillWolfs()
+        {
+            _animals.Add(new Animal("Wolf", "female", "Woof"));
+            _animals.Add(new Animal("Wolf", "male", "Woof"));
+            _animals.Add(new Animal("Wolf", "male", "Woof"));
+            _animals.Add(new Animal("Wolf", "female", "Woof"));
+            _animals.Add(new Animal("Wolf", "female", "Woof"));
+            _animals.Add(new Animal("Wolf", "female", "Woof"));
+            _animals.Add(new Animal("Wolf", "female", "Woof"));
+        }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine($"\nОсобей --- {_animals.Count} шт.");
+
+            for (int i = 0; i < _animals.Count; i++)
+            {
+                Console.WriteLine($"\n{_animals[i].Name} --- {_animals[i].Sex} --- {_animals[i].Sound}");
+            }
+        }
+    }
+
+    class Animal
+    {
+        public string Sex { get; private set; }
+        public string Sound { get; private set; }
+        public string Name { get; private set; }
+
+        public Animal(string name, string sex, string sound)
+        {
+            Name = name;
+            Sex = sex;
+            Sound = sound;
+        }
+    }
+}
