@@ -13,12 +13,16 @@ namespace Start
             Random random = new Random();
             int maxNumber = 27;
             int minNumber = 1;
-            int number = random.Next(minNumber, maxNumber+1);
+            int number = random.Next(minNumber, maxNumber + 1);
+            int minResult = 100;
             int maxResult = 999;
 
             for (int result = number; result <= maxResult; result += number)
             {
-                Console.WriteLine(result);
+                if (result >= minResult)
+                {
+                    Console.WriteLine(result);
+                }
             }
         }
     }
