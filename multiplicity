@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Program
+    {
+        public static void Main()
+        {
+            Random random = new Random();
+            int maxN = 27;
+            int minN = 1;
+            int n = random.Next(minN, maxN+1);
+            int maxResult = 999;
+
+            for (int result = n; result <= maxResult; result += n)
+            {
+                Console.WriteLine(result);
+            }
+        }
+    }
+}
