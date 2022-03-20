@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Program
+    {
+        public static void Main()
+        {
+            string text = "((())())";
+            int count = 0;
+            int maxDeep = 0;
+            int deep = 0;
+
+            foreach (var symbol in text)
+            {
+                if (symbol == '(')
+                {
+                    count++;
+                    deep++;
+                }
+                if (symbol == ')')
+                {
+                    if (deep>maxDeep)
+                    {
+                        maxDeep = deep;
+                    }
+                    count--;
+                    deep = 0;
+                }
+            }
+            if (count == 0)
+            {
+                Console.WriteLine("Баланс скобок соблюдён");
+            }
+            else
+            {
+                Console.WriteLine("Баланс скобок нарушен");
+            }
+            Console.WriteLine(maxDeep);
+        }
+    }
+}
