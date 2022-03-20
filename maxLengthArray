@@ -13,8 +13,9 @@ namespace Start
             Random random = new Random();
             int[] numbers = new int[30];
             int minNumber = 0;
-            int maxNumber = 10;
-            int length = 0;
+            int maxNumber = 5;
+            int length = 1;
+            int maxLength = 1;
             int numberOfMaxLength = 0;
 
             for (int i = 0; i < numbers.Length; i++)
@@ -22,18 +23,24 @@ namespace Start
                 numbers[i] = random.Next(minNumber, maxNumber);
                 Console.Write(numbers[i] + " ");
             }
-            foreach (var number in numbers)
+            for (int i = 0; i < numbers.Length; i++)
             {
-                int tempLength = Array.FindAll(numbers, x => x == numbers[number]).Length;
-
-                if (tempLength > length)
+                if (i < numbers.Length -1 && numbers[i] == numbers[i+1])
                 {
-                    length = tempLength;
-                    numberOfMaxLength = number;
+                    length++;
+                }
+                else
+                {
+                    if (length > maxLength)
+                    {
+                        maxLength = length;
+                        numberOfMaxLength = numbers[i];
+                    }
+                    length = 1;
                 }
             }
             Console.WriteLine();
-            Console.WriteLine(length);
+            Console.WriteLine(maxLength);
             Console.WriteLine(numberOfMaxLength);
         }
     }
