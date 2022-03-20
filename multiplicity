@@ -11,12 +11,12 @@ namespace Start
         public static void Main()
         {
             Random random = new Random();
-            int maxN = 27;
-            int minN = 1;
-            int n = random.Next(minN, maxN+1);
+            int maxNumber = 27;
+            int minNumber = 1;
+            int number = random.Next(minNumber, maxNumber+1);
             int maxResult = 999;
 
-            for (int result = n; result <= maxResult; result += n)
+            for (int result = number; result <= maxResult; result += number)
             {
                 Console.WriteLine(result);
             }
