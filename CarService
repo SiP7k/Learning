@@ -1,0 +1,157 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    enum Defect
+    {
+        Тормоза,
+        ГРМ,
+        Колесо,
+        Краска,
+        Аккумулятор
+    }
+
+    class Test
+    {
+        public static void Main()
+        {
+            bool isWorking = true;
+            CarService carService = new CarService(0, 50);
+
+            while (isWorking)
+            {
+                Car car = new Car();
+                carService.ShowInfo(car);
+                carService.FixCar(car);
+            }
+        }
+    }
+
+    class CarService
+    {
+        private int _money;
+        private List<Detail> _detailsAvailable;
+        private int _price;
+        private List<Detail> _details;
+
+        public CarService(int money, int price)
+        {
+            _money = money;
+            _detailsAvailable = new List<Detail>();
+            _price = price;
+            _details = new List<Detail>();
+            SupplyOfDetails();
+        }
+
+        public void ShowInfo(Car car)
+        {
+            Detail tempDetail = _details.Find(detail => detail.DefectToFix == car.Defect);
+            int price = _price + tempDetail.Price;
+            Console.WriteLine($"Поломка - {car.Defect}\nЦена за починку {price}\n");
+        }
+
+        public void FixCar(Car car)
+        {
+            ShowDetails();
+            Console.WriteLine("Введите номер детали или, для отказа, - команду <<refuse>>:");
+            string userInput = Console.ReadLine();
+
+            if (Int32.TryParse(userInput, out int result) && result <= _detailsAvailable.Count && result > 0)
+            {
+                int detailIndex = result - 1;
+                Detail detail = _detailsAvailable[detailIndex];
+                
+                if (detail.DefectToFix == car.Defect)
+                {
+                    _money += _price + detail.Price;
+                    Console.WriteLine($"Вы успешно заменили деталь и получили {_price + detail.Price}$\nВаш баланс: {_money} $");
+                    DeleteDetail(detail);
+                }
+                else
+                {
+                    int penalty = _price;
+                    _money -= penalty;
+                    Console.WriteLine($"Вы заменили неправильную деталь и получили штраф -{penalty}$\nВаш баланс: {_money} $");
+                }
+            }
+            else if (userInput == "refuse")
+            {
+                int penalty = 10;
+                _money -= penalty;
+                Console.WriteLine($"Вы отказались от замены детали и получили штраф -{penalty}$\nВаш баланс: {_money} $");
+            }
+            else
+            {
+                Console.WriteLine("Неправильный ввод данных...");
+            }
+            RefillDetails();
+            Console.WriteLine("Нажмите любую клавишу для обслуживания следующей машины...");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        private void RefillDetails()
+        {
+            if (_detailsAvailable.Count == 0)
+            {
+                SupplyOfDetails();
+            }
+        }
+
+        private void ShowDetails()
+        {
+            for (int i = 0; i < _detailsAvailable.Count; i++)
+            {
+                int detailNumber = i + 1;
+                Console.WriteLine($"{detailNumber}) - {_detailsAvailable[i].DefectToFix}");
+            }
+        }
+
+        private void SupplyOfDetails()
+        {
+            _detailsAvailable.Add(new Detail(Defect.Тормоза, 100));
+            _detailsAvailable.Add(new Detail(Defect.ГРМ, 30));
+            _detailsAvailable.Add(new Detail(Defect.Колесо, 10));
+            _detailsAvailable.Add(new Detail(Defect.Краска, 20));
+            _detailsAvailable.Add(new Detail(Defect.Аккумулятор, 50));
+
+            if (_details.Count == 0)
+            {
+                _details.AddRange(_detailsAvailable);
+            }
+        }
+
+        private void DeleteDetail(Detail detailToRemove)
+        {
+            _detailsAvailable.Remove(detailToRemove);
+        }
+    }
+
+    class Car
+    {
+        private Random _random = new Random();
+        public Defect Defect { get; private set; }
+
+        public Car()
+        {
+            int defectIndex = _random.Next(0, Defect.GetValues(typeof(Defect)).Length + 1);
+            Defect = (Defect)defectIndex;
+        }
+    }
+
+    class Detail
+    {
+        public int Price { get; private set; }
+        public Defect DefectToFix { get; private set; }
+
+        public Detail(Defect defectToFix, int price)
+        {
+            DefectToFix = defectToFix;
+            Price = price;
+        }
+    }
+}
