@@ -16,12 +16,15 @@ namespace Start
             int number = random.Next(minNumber,maxNumber);
             int result = 0;
             int two = 2;
+            int finalDegree = 0;
             Console.WriteLine(number);
 
             for (int degree = 1; result <= number; degree++)
             {
                 result = (int)Math.Pow(two, degree);
+                finalDegree = degree;
             }
+            Console.WriteLine(finalDegree);
             Console.WriteLine(result);
         }
     }
