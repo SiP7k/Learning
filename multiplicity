@@ -14,16 +14,18 @@ namespace Start
             int maxNumber = 27;
             int minNumber = 1;
             int number = random.Next(minNumber, maxNumber + 1);
-            int minResult = 100;
-            int maxResult = 999;
+            int minDividend = 100;
+            int maxDividend = 999;
+            int countDividends = 0;
 
-            for (int result = number; result <= maxResult; result += number)
+            for (int dividend = number; dividend <= maxDividend; dividend += number)
             {
-                if (result >= minResult)
+                if (dividend >= minDividend)
                 {
-                    Console.WriteLine(result);
+                    countDividends++;
                 }
             }
+            Console.WriteLine(countDividends);
         }
     }
 }
