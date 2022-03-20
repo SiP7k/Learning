@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Program
+    {
+        public static void Main()
+        {
+            string[] firstNames = new string[] { "Savva", "Irma", "Sasha" };
+            string[] secondNames = new string[] { "Sasha", "Vitaliy" };
+
+            List<string> names = new List<string>();
+            names.AddRange(firstNames);
+
+            for (int i = 0; i < secondNames.Length; i++)
+            {
+                if (names.Contains(secondNames[i]))
+                {
+                }
+                else
+                {
+                    names.Add(secondNames[i]);
+                }
+            }
+            foreach (var name in names)
+            {
+                Console.WriteLine(name);
+            }
+        }
+    }
+}
