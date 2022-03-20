@@ -1,0 +1,28 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Program
+    {
+        public static void Main()
+        {
+            Random random = new Random();
+            int minNumber = 0;
+            int maxNumber = 1000;
+            int number = random.Next(minNumber,maxNumber);
+            int result = 0;
+            int two = 2;
+            Console.WriteLine(number);
+
+            for (int degree = 1; result <= number; degree++)
+            {
+                result = (int)Math.Pow(two, degree);
+            }
+            Console.WriteLine(result);
+        }
+    }
+}
