@@ -17,25 +17,28 @@ namespace Start
             }
             string userInput = Console.ReadLine();
 
-            if (int.TryParse(userInput, out int result) && result > 0 && result < numbers.Length)
+            if (int.TryParse(userInput, out int movesCount) && movesCount > 0 && movesCount < numbers.Length)
             {
-                for (int i = 0; i < result; i++)
+                for (int i = 0; i < movesCount; i++)
                 {
                     int tempNumber = 0;
+                    int penultimateNumber = numbers.Length - 1;
 
-                    for (int j= 0; j < numbers.Length-1; j++)
+                    for (int j= 0; j < penultimateNumber; j++)
                     {
+                        int nextNumber = j + 1;
+
                         if (j==0)
                         {
                             tempNumber = numbers[j];
-                            numbers[j] = numbers[j + 1];
+                            numbers[j] = numbers[nextNumber];
                         }
-                        else if (j>0)
+                        else
                         {
-                            numbers[j] = numbers[j + 1];
+                            numbers[j] = numbers[nextNumber];
                         }
                     }
-                    numbers[numbers.Length - 1] = tempNumber;
+                    numbers[penultimateNumber] = tempNumber;
                 }
             }
             else
