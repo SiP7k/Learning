@@ -17,10 +17,7 @@ namespace Start
 
             for (int i = 0; i < secondNames.Length; i++)
             {
-                if (names.Contains(secondNames[i]))
-                {
-                }
-                else
+                if (!names.Contains(secondNames[i]))
                 {
                     names.Add(secondNames[i]);
                 }
