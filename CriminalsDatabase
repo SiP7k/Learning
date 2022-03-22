@@ -1,1 +1,119 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
+namespace Start
+{
+    class Program
+    {
+        public static void Main()
+        {
+            Database database = new Database();
+            bool isWorking = true;
+            database.AddCriminals();
+
+            while (isWorking)
+            {
+                isWorking = database.ChooseSearchParameter();
+            }
+        }
+    }
+
+    class Database
+    {
+        private List<Criminal> _criminals;
+
+        public Database()
+        {
+            _criminals = new List<Criminal>();
+        }
+
+        public bool ChooseSearchParameter()
+        {
+            Console.WriteLine("1 - Поиск по весу\n2 - поиск по росту\n3 - поиск по национальности\n4 - выход");
+            string userInput = Console.ReadLine();
+
+            if (userInput == "4")
+            {
+                return false;
+            }
+            Search(userInput);
+            return true;
+        }
+
+        private void Search(string userInput)
+        {
+            bool isFound = false;
+
+            while (!isFound)
+            {
+                Console.WriteLine("Для поиска непойманных преступников введите данные:");
+                string searchParameter = Console.ReadLine();
+
+                if (userInput == "1" && int.TryParse(searchParameter, out int weight) && weight > 0)
+                {
+                    var foundCriminals = _criminals.Where(criminal => criminal.Weight == weight && criminal.IsImprisoned == false);
+                    isFound = ShowCriminals(foundCriminals);
+                }
+                else if (userInput == "2" && int.TryParse(searchParameter, out int height) && height > 0)
+                {
+                    var foundCriminals = _criminals.Where(criminal => criminal.Height == height && criminal.IsImprisoned == false);
+                    isFound = ShowCriminals(foundCriminals);
+                }
+                else if (userInput == "3")
+                {
+                    var foundCriminals = _criminals.Where(criminal => criminal.Nationality == searchParameter && criminal.IsImprisoned == false);
+                    isFound = ShowCriminals(foundCriminals);
+                }
+                else
+                {
+                    Console.WriteLine("Неправильный ввод данных...");
+                }
+            }
+        }
+
+        private bool ShowCriminals(IEnumerable<Criminal> foundCriminals)
+        {
+            if (foundCriminals.Count() > 0)
+            {
+                foreach (var criminal in foundCriminals)
+                {
+                    Console.WriteLine(criminal.Fio);
+                }
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Преступников с такими параметрами не найдено...");
+                return false;
+            }
+        }
+
+        public void AddCriminals()
+        {
+            _criminals.Add(new Criminal("Чальцев Савва Денисович", false, 188, 60, "Русский"));
+            _criminals.Add(new Criminal("Чальцева Ирма Геннадьевна", true, 170, 65, "Украинка"));
+            _criminals.Add(new Criminal("Иванов Иван Иванович", false, 176, 80, "Русский"));
+        }
+    }
+
+    class Criminal
+    {
+        public string Fio { get; private set; }
+        public bool IsImprisoned { get; private set; }
+        public int Height { get; private set; }
+        public int Weight { get; private set; }
+        public string Nationality { get; private set; }
+
+        public Criminal(string fio, bool isImprisoned, int height, int weight, string nationality)
+        {
+            Fio = fio;
+            IsImprisoned = isImprisoned;
+            Height = height;
+            Weight = weight;
+            Nationality = nationality;
+        }
+    }
+}
