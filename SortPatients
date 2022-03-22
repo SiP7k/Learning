@@ -22,10 +22,10 @@ namespace Start
                 switch (userInput)
                 {
                     case "1":
-                        hospital.SortFio();
+                        hospital.SortByFio();
                         break;
                     case "2":
-                        hospital.SortAge();
+                        hospital.SortByAge();
                         break;
                     case "3":
                         hospital.SearchDisease();
@@ -49,26 +49,12 @@ namespace Start
             AddPatients();
         }
 
-        private void AddPatients()
-        {
-            _patients.Add(new Patient("Чальцев Савва Денисович", "Игромания", 21));
-            _patients.Add(new Patient("Чальцева Ирма Геннадьевна", "Склероз", 24));
-            _patients.Add(new Patient("Авдеев Даниил Сергеевич", "Психоз", 23));
-            _patients.Add(new Patient("Грязнова Анна Альбертовна", "Выгорание", 28));
-            _patients.Add(new Patient("Иванов Пётр Денисович", "Агрессия", 35));
-            _patients.Add(new Patient("Петров Иван Денисович", "УО", 14));
-            _patients.Add(new Patient("Денис Пётр Иванович", "Заикание", 18));
-            _patients.Add(new Patient("Абра Кадабра Иванов", "Корона", 23));
-            _patients.Add(new Patient("Ахутнг Игорь Николаевич", "Игромания", 38));
-            _patients.Add(new Patient("Хаптьфу Пётр Петрович", "Игромания", 26));
-        }
-
-        public void SortFio()
+        public void SortByFio()
         {
             _patients = _patients.OrderBy(patient => patient.Fio).ToList();
         }
 
-        public void SortAge()
+        public void SortByAge()
         {
             _patients = _patients.OrderBy(patient => patient.Age).ToList();
         }
@@ -95,6 +81,20 @@ namespace Start
                 Console.WriteLine(patient.Fio);
             }
             Console.WriteLine();
+        }
+
+        private void AddPatients()
+        {
+            _patients.Add(new Patient("Чальцев Савва Денисович", "Игромания", 21));
+            _patients.Add(new Patient("Чальцева Ирма Геннадьевна", "Склероз", 24));
+            _patients.Add(new Patient("Авдеев Даниил Сергеевич", "Психоз", 23));
+            _patients.Add(new Patient("Грязнова Анна Альбертовна", "Выгорание", 28));
+            _patients.Add(new Patient("Иванов Пётр Денисович", "Агрессия", 35));
+            _patients.Add(new Patient("Петров Иван Денисович", "УО", 14));
+            _patients.Add(new Patient("Денис Пётр Иванович", "Заикание", 18));
+            _patients.Add(new Patient("Абра Кадабра Иванов", "Корона", 23));
+            _patients.Add(new Patient("Ахутнг Игорь Николаевич", "Игромания", 38));
+            _patients.Add(new Patient("Хаптьфу Пётр Петрович", "Игромания", 26));
         }
     }
 
