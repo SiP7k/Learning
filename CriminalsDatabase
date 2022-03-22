@@ -12,11 +12,10 @@ namespace Start
         {
             Database database = new Database();
             bool isWorking = true;
-            database.AddCriminals();
 
             while (isWorking)
             {
-                isWorking = database.ChooseSearchParameter();
+                database.Search();
             }
         }
     }
@@ -28,49 +27,35 @@ namespace Start
         public Database()
         {
             _criminals = new List<Criminal>();
+            AddCriminals();
         }
 
-        public bool ChooseSearchParameter()
-        {
-            Console.WriteLine("1 - Поиск по весу\n2 - поиск по росту\n3 - поиск по национальности\n4 - выход");
-            string userInput = Console.ReadLine();
-
-            if (userInput == "4")
-            {
-                return false;
-            }
-            Search(userInput);
-            return true;
-        }
-
-        private void Search(string userInput)
+        public void Search()
         {
             bool isFound = false;
 
             while (!isFound)
             {
                 Console.WriteLine("Для поиска непойманных преступников введите данные:");
-                string searchParameter = Console.ReadLine();
+                Console.Write("1) Введите вес преступника: ");
+                string weightInput = Console.ReadLine();
+                Console.Write("2) Введите рост преступника: ");
+                string heigthInput = Console.ReadLine();
+                Console.Write("3) Введите национальность преступника: ");
+                string nationalityInput = Console.ReadLine();
 
-                if (userInput == "1" && int.TryParse(searchParameter, out int weight) && weight > 0)
+                if (int.TryParse(weightInput, out int weight) && weight > 0 && int.TryParse(heigthInput, out int heigth) && heigth > 0)
                 {
-                    var foundCriminals = _criminals.Where(criminal => criminal.Weight == weight && criminal.IsImprisoned == false);
-                    isFound = ShowCriminals(foundCriminals);
-                }
-                else if (userInput == "2" && int.TryParse(searchParameter, out int height) && height > 0)
-                {
-                    var foundCriminals = _criminals.Where(criminal => criminal.Height == height && criminal.IsImprisoned == false);
-                    isFound = ShowCriminals(foundCriminals);
-                }
-                else if (userInput == "3")
-                {
-                    var foundCriminals = _criminals.Where(criminal => criminal.Nationality == searchParameter && criminal.IsImprisoned == false);
+                    var foundCriminals = _criminals.Where(criminal => criminal.Weight == weight && criminal.Height == heigth && criminal.Nationality == nationalityInput && criminal.IsImprisoned == false);
                     isFound = ShowCriminals(foundCriminals);
                 }
                 else
                 {
                     Console.WriteLine("Неправильный ввод данных...");
                 }
+                Console.WriteLine("Нажмите любую кнопку для поиска следующего преступника...");
+                Console.ReadKey();
+                Console.Clear();
             }
         }
 
@@ -91,7 +76,7 @@ namespace Start
             }
         }
 
-        public void AddCriminals()
+        private void AddCriminals()
         {
             _criminals.Add(new Criminal("Чальцев Савва Денисович", false, 188, 60, "Русский"));
             _criminals.Add(new Criminal("Чальцева Ирма Геннадьевна", true, 170, 65, "Украинка"));
