@@ -1,0 +1,72 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Program
+    {
+        public static void Main()
+        {
+            Army army = new Army();
+            army.SendSoldiers();
+        }
+    }
+
+    class Army
+    {
+        private List<Soldier> _firstSquad;
+        private List<Soldier> _secondSquad;
+
+        public Army()
+        {
+            _firstSquad = new List<Soldier>() {
+            new Soldier("Чальцев Савва Денисович", "Рядовой"),
+            new Soldier("Чальцева Ирма Геннадьевна", "Майор"),
+            new Soldier("Бавдеев Даниил Сергеевич", "Сержант"),
+            new Soldier("Грязнова Анна Альбертовна", "Рядовой"),
+            new Soldier("Биванов Пётр Денисович", "Рядовой")
+            };
+
+            _secondSquad = new List<Soldier>() {
+            new Soldier("Ахтунг", "Рядовой"),
+            new Soldier("Фиддель", "Майор"),
+            new Soldier("Саркс", "Сержант"),
+            new Soldier("Унизитель", "Рядовой"),
+            new Soldier("Петя", "Рядовой")
+            };
+        }
+
+        public void SendSoldiers()
+        {
+            Soldier[] soldiersToSend = _firstSquad.Where(soldier => soldier.Name.StartsWith("Б")).ToArray();
+            _secondSquad.AddRange(soldiersToSend);
+            _firstSquad = _firstSquad.Except(soldiersToSend).ToList();
+            ShowSquad(_firstSquad);
+            ShowSquad(_secondSquad);
+        }
+
+        private void ShowSquad(List<Soldier> squad)
+        {
+            foreach (var soldier in squad)
+            {
+                Console.WriteLine(soldier.Name + " --- " + soldier.Rank);
+            }
+            Console.WriteLine();
+        }
+    }
+
+    class Soldier
+    {
+        public string Name { get; private set; }
+        public string Rank { get; private set; }
+
+        public Soldier(string name, string rank)
+        {
+            Name = name;
+            Rank = rank;
+        }
+    }
+}
