@@ -11,7 +11,7 @@ namespace Start
         public static void Main()
         {
             Database database = new Database();
-            database.SelectSoldierParameter();
+            database.SelectParameters();
         }
     }
 
@@ -25,18 +25,15 @@ namespace Start
             AddPlayers();
         }
 
-        public void SelectSoldierParameter()
+        public void SelectParameters()
         {
             var soldiers = _soldiers.Select(soldier => new
             {
                 name = soldier.Name,
                 rank = soldier.Rank
             });
-        }
 
-        private void ShowNamesAndRanks()
-        {
-            foreach (var soldier in soldiers)
+                foreach (var soldier in soldiers)
             {
                 Console.WriteLine(soldier.name + " --- " + soldier.rank);
             }
