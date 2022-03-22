@@ -1,0 +1,80 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Program
+    {
+        public static void Main()
+        {
+            Leaderboard leaderboard = new Leaderboard();
+            leaderboard.SortByLevel();
+            Console.WriteLine();
+            leaderboard.SortByPower();
+        }
+    }
+
+    class Leaderboard
+    {
+        private List<Player> _players;
+
+        public Leaderboard()
+        {
+            _players = new List<Player>();
+            AddPlayers();
+        }
+
+        public void SortByLevel()
+        {
+            var topPlayers = _players.OrderBy(player => player.Level).Take(3);
+            ShowTopPlayers(topPlayers);
+        }
+
+        public void SortByPower()
+        {
+            var topPlayers = _players.OrderBy(player => player.Power).Take(3);
+            ShowTopPlayers(topPlayers);
+        }
+
+        private void AddPlayers()
+        {
+            _players.Add(new Player("Чальцев Савва Денисович", 1, 21));
+            _players.Add(new Player("Чальцева Ирма Геннадьевна", 2, 24));
+            _players.Add(new Player("Авдеев Даниил Сергеевич", 3, 23));
+            _players.Add(new Player("Грязнова Анна Альбертовна", 4, 28));
+            _players.Add(new Player("Иванов Пётр Денисович", 5, 35));
+            _players.Add(new Player("Петров Иван Денисович", 6, 14));
+            _players.Add(new Player("Денис Пётр Иванович", 7, 18));
+            _players.Add(new Player("Абра Кадабра Иванов", 8, 23));
+            _players.Add(new Player("Ахутнг Игорь Николаевич", 9, 38));
+            _players.Add(new Player("Хаптьфу Пётр Петрович", 10, 26));
+        }
+
+        private void ShowTopPlayers(IEnumerable <Player> players)
+        {
+            Console.WriteLine("Топ 3 игрока:");
+
+            foreach (var player in players)
+            {
+                Console.WriteLine(player.Name);
+            }
+        }
+    }
+
+    class Player
+    {
+        public string Name { get; private set; }
+        public int Level { get; private set; }
+        public int Power { get; private set; }
+
+        public Player(string name, int level, int power)
+        {
+            Name = name;
+            Level = level;
+            Power = power;
+        }
+    }
+}
