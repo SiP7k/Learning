@@ -29,8 +29,10 @@ namespace Start
 
         public void ForgiveCriminals()
         {
-            int forgivenCriminals = _criminals.RemoveAll(criminal => criminal.Crime == "Антиправительственное");
-            Console.WriteLine($"\nКоличество освобождённых преступников: {forgivenCriminals}\n");
+            var forgivenCriminals = _criminals.Where(criminal => criminal.Crime == "Антиправительственное");
+            _criminals = _criminals.Except(forgivenCriminals).ToList();
+            
+            Console.WriteLine($"\nКоличество освобождённых преступников: {forgivenCriminals.Count()}\n");
         }
 
         public void ShowCriminals()
