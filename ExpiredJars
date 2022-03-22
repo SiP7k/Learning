@@ -1,0 +1,71 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Program
+    {
+        public static void Main()
+        {
+            Shop shop = new Shop();
+            shop.GetExpiredJars();
+        }
+    }
+
+    class Shop
+    {
+        private List<JarOfStew> _jarsOfStew;
+
+        public Shop()
+        {
+            _jarsOfStew = new List<JarOfStew>();
+            AddJarOfStew();
+        }
+
+        public void GetExpiredJars()
+        {
+            int currentYear = 2022;
+            var expiredJars = _jarsOfStew.Where(jar => jar.Year + jar.ExpirationDate < currentYear);
+            ShowExpiredJares(expiredJars);
+        }
+
+        private void ShowExpiredJares(IEnumerable<JarOfStew> expiredJars)
+        {
+            foreach (var jar in expiredJars)
+            {
+                Console.WriteLine(jar.Name);
+            }
+        }
+
+        private void AddJarOfStew()
+        {
+            _jarsOfStew.Add(new JarOfStew("Гродфуд", 1998, 10));
+            _jarsOfStew.Add(new JarOfStew("Барс", 2007, 20));
+            _jarsOfStew.Add(new JarOfStew("Совок", 2008, 10));
+            _jarsOfStew.Add(new JarOfStew("Вкусвилл", 2018, 15));
+            _jarsOfStew.Add(new JarOfStew("Микоян", 1578, 100));
+            _jarsOfStew.Add(new JarOfStew("ОМКК", 2009, 10));
+            _jarsOfStew.Add(new JarOfStew("ГродФуд2", 2019, 15));
+            _jarsOfStew.Add(new JarOfStew("Барс2", 2011, 10));
+            _jarsOfStew.Add(new JarOfStew("Совок2", 2014, 3));
+            _jarsOfStew.Add(new JarOfStew("Микоян2", 2017, 8));
+        }
+    }
+
+    class JarOfStew
+    {
+        public string Name { get; private set; }
+        public int Year { get; private set; }
+        public int ExpirationDate { get; private set; }
+
+        public JarOfStew(string name, int year, int expirationDate)
+        {
+            Name = name;
+            Year = year;
+            ExpirationDate = expirationDate;
+        }
+    }
+}
