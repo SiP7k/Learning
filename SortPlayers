@@ -29,13 +29,15 @@ namespace Start
 
         public void SortByLevel()
         {
-            var topPlayers = _players.OrderBy(player => player.Level).Take(3);
+            int numberOfTopPlayers = 3;
+            var topPlayers = _players.OrderBy(player => player.Level).Take(numberOfTopPlayers);
             ShowTopPlayers(topPlayers);
         }
 
         public void SortByPower()
         {
-            var topPlayers = _players.OrderBy(player => player.Power).Take(3);
+            int numberOfTopPlayers = 3;
+            var topPlayers = _players.OrderBy(player => player.Power).Take(numberOfTopPlayers);
             ShowTopPlayers(topPlayers);
         }
 
@@ -53,7 +55,7 @@ namespace Start
             _players.Add(new Player("Хаптьфу Пётр Петрович", 10, 26));
         }
 
-        private void ShowTopPlayers(IEnumerable <Player> players)
+        private void ShowTopPlayers(IEnumerable<Player> players)
         {
             Console.WriteLine("Топ 3 игрока:");
 
