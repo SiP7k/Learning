@@ -32,7 +32,10 @@ namespace Start
                 name = soldier.Name,
                 rank = soldier.Rank
             });
+        }
 
+        private void ShowNamesAndRanks()
+        {
             foreach (var soldier in soldiers)
             {
                 Console.WriteLine(soldier.name + " --- " + soldier.rank);
