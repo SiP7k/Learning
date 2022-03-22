@@ -1,0 +1,67 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Program
+    {
+        public static void Main()
+        {
+            Database database = new Database();
+            database.SelectSoldierParameter();
+        }
+    }
+
+    class Database
+    {
+        private List<Soldier> _soldiers;
+
+        public Database()
+        {
+            _soldiers = new List<Soldier>();
+            AddPlayers();
+        }
+
+        public void SelectSoldierParameter()
+        {
+            var soldiers = _soldiers.Select(soldier => new
+            {
+                name = soldier.Name,
+                rank = soldier.Rank
+            });
+
+            foreach (var soldier in soldiers)
+            {
+                Console.WriteLine(soldier.name + " --- " + soldier.rank);
+            }
+        }
+
+        private void AddPlayers()
+        {
+            _soldiers.Add(new Soldier("Чальцев Савва Денисович", "deagle", "Рядовой", 7));
+            _soldiers.Add(new Soldier("Чальцева Ирма Геннадьевна", "ak-47", "Майор", 7));
+            _soldiers.Add(new Soldier("Авдеев Даниил Сергеевич", "m4a1", "Сержант", 7));
+            _soldiers.Add(new Soldier("Грязнова Анна Альбертовна", "ak-47", "Рядовой", 7));
+            _soldiers.Add(new Soldier("Иванов Пётр Денисович", "m4a1", "Рядовой", 7));
+        }
+    }
+
+    class Soldier
+    {
+        private string _arming;
+        private int _monthsOfService;
+        public string Name { get; private set; }
+        public string Rank { get; private set; }
+
+        public Soldier(string name, string arming, string rank, int monthsOfService)
+        {
+            Name = name;
+            _arming = arming;
+            Rank = rank;
+            _monthsOfService = monthsOfService;
+        }
+    }
+}
