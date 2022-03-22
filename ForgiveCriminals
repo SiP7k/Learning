@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Start
+{
+    class Program
+    {
+        public static void Main()
+        {
+            Prison prison = new Prison();
+            prison.ShowCriminals();
+            prison.ForgiveCriminals();
+            prison.ShowCriminals();
+        }
+    }
+
+    class Prison
+    {
+        private List<Criminal> _criminals;
+
+        public Prison()
+        {
+            _criminals = new List<Criminal>();
+            AddCriminals();
+        }
+
+        public void ForgiveCriminals()
+        {
+            int forgivenCriminals = _criminals.RemoveAll(criminal => criminal.Crime == "Антиправительственное");
+            Console.WriteLine($"\nКоличество освобождённых преступников: {forgivenCriminals}\n");
+        }
+
+        public void ShowCriminals()
+        {
+            Console.WriteLine("Список преступников за решёткой:");
+
+            foreach (var criminal in _criminals)
+            {
+                Console.WriteLine(criminal.Fio);
+            }
+        }
+        private void AddCriminals()
+        {
+            _criminals.Add(new Criminal("Чальцев Савва Денисович", "Антиправительственное"));
+            _criminals.Add(new Criminal("Чальцева Ирма Геннадьевна", "Воровство"));
+            _criminals.Add(new Criminal("Иванов Иван Иванович", "Хулиганство"));
+        }
+    }
+
+    class Criminal
+    {
+        public string Fio { get; private set; }
+        public string Crime { get; private set; }
+
+        public Criminal(string fio, string crime)
+        {
+            Fio = fio;
+            Crime = crime;
+        }
+    }
+}
